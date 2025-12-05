@@ -1,0 +1,674 @@
+[00:00:01.613] Server  LOG      ✓ Ready in 1229ms
+[00:00:04.771] Server  LOG      ○ Compiling / ...
+[00:00:07.330] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:07.569] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:07.569] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:07.569] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764946730284}
+[00:00:08.902] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:08.902] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:08.902] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:08.902] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:09.209] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.216] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.221] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.266] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.270] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.276] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:09.375] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.379] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.380] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.384] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.385] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:09.392] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:09.400] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:09.502] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:35.124] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/profil color: rgb(120, 120, 120) color: inherit {"dp":"/profil","o":"http://localhost:3000/profil","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764946757803}
+[00:00:35.149] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.150] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.152] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.156] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.158] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.162] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:35.229] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.232] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.234] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.238] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.240] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:35.246] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:35.356] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:35.356] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:47.664] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.665] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.668] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.670] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.672] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.677] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:47.683] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764946770254}
+[00:00:47.683] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:47.683] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:47.683] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:47.683] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:47.749] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.750] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.751] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.752] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.753] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:47.756] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:47.881] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:47.881] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:51.685] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:51.930] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:51.932] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:51.932] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:51.934] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:51.935] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:51.939] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:52.012] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:52.014] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:52.015] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:52.020] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:52.021] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:52.026] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:52.040] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:52.040] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:00:52.040] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764946774599}
+[00:00:52.040] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:52.040] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:52.040] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:52.040] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:00:52.166] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:52.166] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:54.616] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/profil color: rgb(120, 120, 120) color: inherit {"dp":"/profil","o":"http://localhost:3000/profil","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764946777302}
+[00:00:54.639] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.639] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.640] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.641] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.644] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.647] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:54.704] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.706] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.707] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.710] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.711] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:00:54.714] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:00:54.827] Browser ERROR   Gagal memuat notifikasi: {}
+[00:00:54.827] Browser ERROR   Gagal memuat notifikasi: {}
+[00:01:15.553] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:15.732] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:15.732] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/profil","route":"/profil"}
+[00:01:15.732] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/profil color: rgb(120, 120, 120) color: inherit {"dp":"/profil","o":"http://localhost:3000/profil","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764946798408}
+[00:01:15.765] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.768] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.769] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.772] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.774] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.779] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:01:15.853] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.855] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.857] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.859] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.860] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:15.862] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:01:15.978] Browser ERROR   Gagal memuat notifikasi: {}
+[00:01:15.978] Browser ERROR   Gagal memuat notifikasi: {}
+[00:01:31.289] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:31.459] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:31.459] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/profil","route":"/profil"}
+[00:01:31.459] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/profil color: rgb(120, 120, 120) color: inherit {"dp":"/profil","o":"http://localhost:3000/profil","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764946814143}
+[00:01:31.532] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.534] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.535] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.538] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.539] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.541] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:01:31.648] Browser ERROR   Gagal memuat notifikasi: {}
+[00:01:31.671] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_mysql2_84e924d7._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.674] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__77842291._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.676] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__263ce5dc._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.680] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.683] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\trace\tracer.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:01:31.689] Server  ERROR   Failed to load notifications: Error: Duplicate foreign key constraint name 'fk_notifications_profile'
+[00:01:31.798] Browser ERROR   Gagal memuat notifikasi: {}
+[00:06:00.776] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:00.936] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:06:00.936] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/profil","route":"/profil"}
+[00:06:00.936] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/profil color: rgb(120, 120, 120) color: inherit {"dp":"/profil","o":"http://localhost:3000/profil","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947083634}
+[00:06:02.889] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947085589}
+[00:06:03.108] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:03.108] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:03.108] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:03.108] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:14.605] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.607] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\[root-of-the-server]__1e97e4f2._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.640] Server  ERROR   C:\xampp\htdocs\gtavapor\.next\dev\server\chunks\node_modules_next_3118b119._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.648] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.651] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.654] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.656] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.658] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.663] Server  ERROR   C:\xampp\htdocs\gtavapor\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+[00:06:14.663] Server  WARN    Error: Route "/api/notifications/[id]" used `params.id`. `params` is a Promise and must be unwrapped with `await` or `React.use()` before accessing its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+[00:06:19.964] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947102677}
+[00:06:24.519] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947107233}
+[00:06:26.512] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947109198}
+[00:06:26.857] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947109562}
+[00:06:30.207] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947112838}
+[00:06:30.207] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:30.207] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:30.207] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:30.207] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:37.777] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947120492}
+[00:06:39.842] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947122543}
+[00:06:40.621] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947123256}
+[00:06:41.444] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947124052}
+[00:06:41.444] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:41.444] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:41.444] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:41.444] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:44.944] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:45.052] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:06:45.052] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:06:45.052] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947127836}
+[00:06:45.466] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:06:45.761] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:06:45.761] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:06:45.761] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947128366}
+[00:06:45.761] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:45.761] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:45.762] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:06:45.762] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:07:22.319] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:07:22.613] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:07:22.613] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:07:22.613] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947165229}
+[00:07:22.613] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:07:22.613] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:07:22.613] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:07:22.613] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:22.703] Server  LOG      ✓ Compiled in 265ms
+[00:08:36.891] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:08:37.179] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:08:37.179] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:08:37.179] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947239807}
+[00:08:37.179] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:37.179] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:37.179] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:37.179] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:40.033] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947242744}
+[00:08:42.478] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947245193}
+[00:08:43.977] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947246594}
+[00:08:43.977] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:43.977] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:43.977] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:43.977] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:46.314] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947249029}
+[00:08:48.614] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947251295}
+[00:08:50.948] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/keuntungan color: rgb(120, 120, 120) color: inherit {"dp":"/keuntungan","o":"http://localhost:3000/keuntungan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947253495}
+[00:08:50.948] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:50.948] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:50.948] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:08:50.948] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:09:32.815] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947295245}
+[00:09:32.815] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:09:32.815] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:09:32.815] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:09:32.815] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:09:47.455] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947310026}
+[00:09:55.152] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947317766}
+[00:10:05.086] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947327666}
+[00:10:40.260] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947362965}
+[00:10:41.821] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947364518}
+[00:10:43.374] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947366025}
+[00:10:46.858] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947369562}
+[00:10:47.679] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947370321}
+[00:11:33.331] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:11:33.331] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:11:36.611] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:11:36.611] Browser WARN    Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+[00:11:49.641] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947432279}
+[00:11:50.711] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947433410}
+[00:11:56.309] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/profil color: rgb(120, 120, 120) color: inherit {"dp":"/profil","o":"http://localhost:3000/profil","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947439010}
+[00:12:10.396] Server  LOG      ✓ Compiled in 157ms
+[00:12:44.147] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947486771}
+[00:12:58.425] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:12:58.660] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:12:58.660] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/unit","route":"/unit"}
+[00:12:58.660] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947501364}
+[00:13:10.474] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947513129}
+[00:13:13.369] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947516083}
+[00:13:15.484] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947518198}
+[00:13:31.705] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947534394}
+[00:13:32.610] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/keuntungan color: rgb(120, 120, 120) color: inherit {"dp":"/keuntungan","o":"http://localhost:3000/keuntungan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947535096}
+[00:13:32.610] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:13:32.610] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:13:32.610] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:13:32.610] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:13:37.465] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947540168}
+[00:13:37.605] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:13:37.605] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:13:37.605] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:13:37.605] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:13:47.687] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947550364}
+[00:14:11.112] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:14:11.310] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:14:11.310] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/stok","route":"/stok"}
+[00:14:11.310] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947574019}
+[00:14:13.081] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947575625}
+[00:14:13.081] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:13.081] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:13.081] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:13.081] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:16.716] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947579413}
+[00:14:17.388] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947580097}
+[00:14:19.204] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947581916}
+[00:14:26.630] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947589206}
+[00:14:26.630] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:26.630] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:26.630] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:26.630] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:29.667] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947592346}
+[00:14:30.440] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947593130}
+[00:14:34.020] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/keuntungan color: rgb(120, 120, 120) color: inherit {"dp":"/keuntungan","o":"http://localhost:3000/keuntungan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947596614}
+[00:14:34.020] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:34.020] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:34.020] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:34.020] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:39.463] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947602013}
+[00:14:39.463] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:39.463] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:39.463] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:14:39.463] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:16:15.595] Server  LOG      ✓ Compiled in 131ms
+[00:16:28.474] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:16:28.780] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:16:28.780] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/","route":"/"}
+[00:16:28.780] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947711354}
+[00:16:28.780] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:16:28.780] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:16:28.780] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:16:28.781] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:18:42.751] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947845462}
+[00:18:49.082] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947851796}
+[00:18:56.263] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947858870}
+[00:18:56.263] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:18:56.263] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:18:56.263] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:18:56.263] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:20:21.231] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947943932}
+[00:20:22.093] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947944768}
+[00:20:24.867] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947947580}
+[00:20:26.607] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947949271}
+[00:20:27.908] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/keuntungan color: rgb(120, 120, 120) color: inherit {"dp":"/keuntungan","o":"http://localhost:3000/keuntungan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764947950482}
+[00:20:27.908] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:20:27.908] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:20:27.908] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:20:27.908] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:20.994] Server  LOG      ✓ Compiled in 342ms
+[00:25:41.092] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:25:41.503] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:25:41.503] Browser LOG     %c[Vercel Web Analytics]%c Running queued event color: rgb(120, 120, 120) color: inherit pageview {"path":"/keuntungan","route":"/keuntungan"}
+[00:25:41.503] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/keuntungan color: rgb(120, 120, 120) color: inherit {"dp":"/keuntungan","o":"http://localhost:3000/keuntungan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948264018}
+[00:25:41.503] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:41.503] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:41.503] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:41.503] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:44.297] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948266998}
+[00:25:45.692] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948268402}
+[00:25:46.524] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948269236}
+[00:25:47.995] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948270599}
+[00:25:47.995] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:47.995] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:47.995] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:47.995] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:25:49.225] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948271919}
+[00:25:50.451] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948273145}
+[00:25:51.030] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948273722}
+[00:26:16.652] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/transaksi color: rgb(120, 120, 120) color: inherit {"dp":"/transaksi","o":"http://localhost:3000/transaksi","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948299337}
+[00:26:29.508] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/keuntungan color: rgb(120, 120, 120) color: inherit {"dp":"/keuntungan","o":"http://localhost:3000/keuntungan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948312095}
+[00:26:29.508] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:26:29.508] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:26:29.508] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:26:29.508] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:26:30.293] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948312991}
+[00:26:32.494] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948315071}
+[00:26:32.494] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:26:32.494] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:26:32.494] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:26:32.494] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:26:42.087] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/stok color: rgb(120, 120, 120) color: inherit {"dp":"/stok","o":"http://localhost:3000/stok","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948324607}
+[00:26:56.090] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/unit color: rgb(120, 120, 120) color: inherit {"dp":"/unit","o":"http://localhost:3000/unit","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948338650}
+[00:27:03.136] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/keuntungan color: rgb(120, 120, 120) color: inherit {"dp":"/keuntungan","o":"http://localhost:3000/keuntungan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948345500}
+[00:27:03.136] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:27:03.136] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:27:03.136] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:27:03.136] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:27:09.205] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/laporan color: rgb(120, 120, 120) color: inherit {"dp":"/laporan","o":"http://localhost:3000/laporan","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948351862}
+[00:27:15.795] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"dp":"/","o":"http://localhost:3000/","sdkn":"@vercel/analytics/next","sdkv":"1.6.1","sv":"0.1.3","ts":1764948358361}
+[00:27:15.795] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:27:15.795] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:27:15.795] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+[00:27:15.795] Browser WARN    The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
