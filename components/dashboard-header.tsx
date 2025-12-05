@@ -159,9 +159,15 @@ export function DashboardHeader({ title, subtitle }: DashboardHeaderProps) {
     }
   }
 
-  const handleLogout = () => {
-    setShowLogoutDialog(false)
-    window.location.href = "/"
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+    } catch (error) {
+      console.error("Gagal logout:", error)
+    } finally {
+      setShowLogoutDialog(false)
+      window.location.href = "/auth/login"
+    }
   }
 
   return (
