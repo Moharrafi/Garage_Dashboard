@@ -54,7 +54,7 @@ export function Sidebar() {
         variant="ghost"
         size="icon"
         className={cn(
-          "fixed top-4 left-4 z-50 lg:hidden transition-opacity duration-200",
+          "fixed top-4 left-2 z-50 lg:hidden transition-opacity duration-200 border border-border rounded-xl bg-background/90 shadow-sm",
           mobileOpen ? "opacity-0 pointer-events-none" : "opacity-100",
         )}
         onClick={() => setMobileOpen(true)}

@@ -321,14 +321,14 @@ export default function TransaksiPage() {
           <CardContent>
             {viewMode === "table" ? (
               <div className="overflow-x-auto">
-                <Table>
+                <Table className="min-w-[780px] table-auto md:table-fixed border-separate border-spacing-0">
                   <TableHeader>
-                    <TableRow className="border-border">
-                      <TableHead className="text-muted-foreground">Tipe</TableHead>
-                      <TableHead className="text-muted-foreground">Nama Barang</TableHead>
-                      <TableHead className="text-muted-foreground text-right">Jumlah</TableHead>
-                      <TableHead className="text-muted-foreground">Tanggal</TableHead>
-                      <TableHead className="text-muted-foreground">Keterangan</TableHead>
+                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
+                      <TableHead>Tipe</TableHead>
+                      <TableHead>Nama Barang</TableHead>
+                      <TableHead className="text-right">Jumlah</TableHead>
+                      <TableHead>Tanggal</TableHead>
+                      <TableHead>Keterangan</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -344,7 +344,7 @@ export default function TransaksiPage() {
                       filteredTransactions.map((tx, index) => (
                         <TableRow
                           key={tx.id}
-                          className="border-border transition-all duration-300 ease-out hover:bg-muted/30 hover:translate-x-0.5"
+                          className="border-b border-border/40 transition-all duration-300 ease-out hover:bg-muted/30 hover:translate-x-0.5 last:border-b-0"
                           style={{ transitionDelay: `${index * 25}ms` }}
                         >
                           <TableCell>

@@ -387,19 +387,19 @@ export default function StokPage() {
           <CardContent>
             {viewMode === "table" ? (
               <div className="overflow-x-auto">
-                <Table>
+                <Table className="min-w-[760px] table-auto md:table-fixed border-separate border-spacing-0">
                   <TableHeader>
-                    <TableRow className="border-border">
-                      <TableHead className="text-muted-foreground">Nama Barang</TableHead>
-                      <TableHead className="text-muted-foreground">Kategori</TableHead>
-                      <TableHead className="text-muted-foreground text-right">Stok</TableHead>
-                      <TableHead className="text-muted-foreground text-right">Min. Stok</TableHead>
-                      <TableHead className="text-muted-foreground text-right">Harga</TableHead>
-                      <TableHead className="text-muted-foreground">Status</TableHead>
-                      <TableHead className="text-muted-foreground text-right">Aksi</TableHead>
+                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
+                      <TableHead>Nama Barang</TableHead>
+                      <TableHead>Kategori</TableHead>
+                      <TableHead className="text-right">Stok</TableHead>
+                      <TableHead className="text-right">Min. Stok</TableHead>
+                      <TableHead className="text-right">Harga</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="text-right">Aksi</TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody>
+                  <TableBody className="divide-y divide-border/40">
                     {filteredItems.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={7} className="text-center text-muted-foreground py-8">

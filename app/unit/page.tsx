@@ -309,6 +309,10 @@ export default function UnitPage() {
   }
 
   const openUpdateStatusDialog = (unit: Unit) => {
+    if (unit.status === "check-out") {
+      showToast("Unit sudah check-out, tidak dapat diupdate lagi", "warning")
+      return
+    }
     setSelectedUnit(unit)
     setNewStatus(unit.status === "check-in" ? "proses" : unit.status === "proses" ? "selesai" : "check-out")
     setIsUpdateStatusOpen(true)
@@ -604,22 +608,23 @@ export default function UnitPage() {
           <CardContent>
             {viewMode === "table" ? (
               <div className="overflow-x-auto">
-                <Table>
+                <Table className="min-w-[900px] table-auto md:table-fixed border-separate border-spacing-0">
                   <TableHeader>
-                    <TableRow className="border-border">
-                      <TableHead className="text-muted-foreground">Kendaraan</TableHead>
-                      <TableHead className="text-muted-foreground">Pemilik</TableHead>
-                      <TableHead className="text-muted-foreground">Layanan</TableHead>
-                      <TableHead className="text-muted-foreground">Status</TableHead>
-                      <TableHead className="text-muted-foreground">Check-in</TableHead>
-                      <TableHead className="text-muted-foreground">Biaya</TableHead>
-                      <TableHead className="text-muted-foreground text-right">Aksi</TableHead>
+                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
+                      <TableHead>Kendaraan</TableHead>
+                      <TableHead>Pemilik</TableHead>
+                      <TableHead>Layanan</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Check-in</TableHead>
+                      <TableHead>Biaya</TableHead>
+                      <TableHead className="w-[220px]">Catatan</TableHead>
+                      <TableHead className="text-center w-[150px]">Aksi</TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody>
+                  <TableBody className="divide-y divide-border/40">
                     {filteredUnits.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                        <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
                           {searchTerm || statusFilter !== "active"
                             ? "Tidak ada unit yang sesuai filter"
                             : "Belum ada data unit"}
@@ -631,7 +636,9 @@ export default function UnitPage() {
                         const status = statusConfig[unit.status]
                         const ServiceIcon = service.icon
                         const StatusIcon = status.icon
-                        const isFinished = unit.status === "selesai" || unit.status === "check-out"
+                        const normalizedStatus = unit.status.trim().toLowerCase()
+                        const canEdit = normalizedStatus === "check-in" || normalizedStatus === "proses"
+                        const canUpdateStatus = normalizedStatus !== "check-out"
 
                         return (
                           <TableRow key={unit.id} className="border-border">
@@ -671,12 +678,15 @@ export default function UnitPage() {
                                 {formatCurrency(unit.final_cost || unit.estimated_cost)}
                               </Badge>
                             </TableCell>
+                            <TableCell className="text-sm text-card-foreground text-wrap break-words w-[220px]">
+                              {unit.notes || "-"}
+                            </TableCell>
                             <TableCell className="text-right">
-                              <div className="flex justify-end gap-1">
+                              <div className="flex justify-end gap-1 items-center">
                                 <Button variant="ghost" size="icon" onClick={() => openViewDialog(unit)}>
                                   <Eye className="h-4 w-4" />
                                 </Button>
-                                {!isFinished && (
+                                {canEdit && (
                                   <>
                                     <Button variant="ghost" size="icon" onClick={() => openEditDialog(unit)}>
                                       <Edit className="h-4 w-4" />
@@ -689,10 +699,17 @@ export default function UnitPage() {
                                     >
                                       <Trash2 className="h-4 w-4" />
                                     </Button>
-                                    <Button variant="outline" size="sm" onClick={() => openUpdateStatusDialog(unit)}>
-                                      Update
-                                    </Button>
                                   </>
+                                )}
+                                {canUpdateStatus && (
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="ml-2"
+                                    onClick={() => openUpdateStatusDialog(unit)}
+                                  >
+                                    Update
+                                  </Button>
                                 )}
                               </div>
                             </TableCell>
@@ -717,7 +734,9 @@ export default function UnitPage() {
                     const status = statusConfig[unit.status]
                     const ServiceIcon = service.icon
                     const StatusIcon = status.icon
-                    const isFinished = unit.status === "selesai" || unit.status === "check-out"
+                    const normalizedStatus = unit.status.trim().toLowerCase()
+                    const canDelete = normalizedStatus === "check-in" || normalizedStatus === "proses"
+                    const canUpdateStatus = normalizedStatus !== "check-out"
 
                     return (
                       <Card key={unit.id} className="bg-secondary/30 border-border">
@@ -760,26 +779,26 @@ export default function UnitPage() {
                               <Eye className="h-3 w-3 mr-1" />
                               Lihat
                             </Button>
-                            {!isFinished && (
-                              <>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="bg-transparent"
-                                  onClick={() => openUpdateStatusDialog(unit)}
-                                >
-                                  Update
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="text-destructive hover:text-destructive flex items-center justify-center"
-                                  onClick={() => openDeleteDialog(unit)}
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                  <span className="sr-only">Hapus</span>
-                                </Button>
-                              </>
+                            {canUpdateStatus && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="bg-transparent"
+                                onClick={() => openUpdateStatusDialog(unit)}
+                              >
+                                Update
+                              </Button>
+                            )}
+                            {canDelete && (
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="text-destructive hover:text-destructive flex items-center justify-center"
+                                onClick={() => openDeleteDialog(unit)}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                                <span className="sr-only">Hapus</span>
+                              </Button>
                             )}
                           </div>
                         </CardContent>

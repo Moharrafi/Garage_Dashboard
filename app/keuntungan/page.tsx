@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { Sidebar } from "@/components/sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { StatCard } from "@/components/stat-card"
@@ -11,12 +11,13 @@ import { Label } from "@/components/ui/label"
 import { TrendingUp, DollarSign, Wallet, PiggyBank, ArrowUpRight, ArrowDownRight, Printer, Loader2 } from "lucide-react"
 import { formatCurrency } from "@/lib/store"
 import { useTheme } from "next-themes"
-import type { Unit, StockTransaction } from "@/lib/types"
+import type { Unit, StockTransaction, Item } from "@/lib/types"
 import { apiFetch } from "@/lib/api"
 import { PageTransition } from "@/components/page-transition"
 import {
   AreaChart,
   Area,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -50,13 +51,11 @@ const serviceColors: Record<string, string> = {
   Restorasi: "#8b5cf6",
 }
 
-const expenseCategories = [
-  { category: "Pembelian Stok Barang", percentage: 48 },
-  { category: "Gaji Karyawan", percentage: 31 },
-  { category: "Listrik & Air", percentage: 6 },
-  { category: "Perawatan Alat", percentage: 8 },
-  { category: "Operasional Lainnya", percentage: 7 },
-]
+const EMPLOYEE_SALARY_PER_PERSON = 2_000_000
+const EMPLOYEE_COUNT = 4
+const ELECTRICITY_TOP_UP_COST = 100_000
+const ELECTRICITY_TOP_UPS = 3 // gunakan estimasi maksimal 3 kali pengisian per bulan
+const OTHER_OPERATIONAL_EXPENSE = 1_440_000
 
 export default function KeuntunganPage() {
   const [startMonth, setStartMonth] = useState("0")
@@ -67,18 +66,50 @@ export default function KeuntunganPage() {
 
   const [units, setUnits] = useState<Unit[]>([])
   const [transactions, setTransactions] = useState<StockTransaction[]>([])
+  const [items, setItems] = useState<Item[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const monthSelection = useMemo(() => {
+    const startIndex = Math.min(Number.parseInt(startMonth), Number.parseInt(endMonth))
+    const endIndex = Math.max(Number.parseInt(startMonth), Number.parseInt(endMonth))
+    const months = monthOptions.slice(startIndex, endIndex + 1)
+    const indexes = months.map((month) => Number.parseInt(month.value))
+    return {
+      months,
+      monthSet: new Set(indexes),
+      monthsCount: months.length || 1,
+      startIndex,
+      indexes,
+    }
+  }, [startMonth, endMonth])
+  const { months: selectedMonths, monthSet: selectedMonthSet, monthsCount, startIndex } = monthSelection
+  const currentYear = new Date().getFullYear()
+  const isWithinMonthSet = (dateString: string | null | undefined, monthSet: Set<number>) => {
+    if (!dateString || monthSet.size === 0) return false
+    const parsed = new Date(dateString)
+    if (Number.isNaN(parsed.getTime())) return false
+    return parsed.getFullYear() === currentYear && monthSet.has(parsed.getMonth())
+  }
+  const isWithinSelectedMonths = (dateString?: string | null) => isWithinMonthSet(dateString, selectedMonthSet)
+
+  const previousMonthIndexes = Array.from({ length: monthsCount }, (_, i) => startIndex - monthsCount + i).filter(
+    (index) => index >= 0 && index <= 11,
+  )
+  const previousMonthSet = new Set(previousMonthIndexes)
+  const previousMonthsCount = previousMonthSet.size
+  const hasPreviousPeriod = previousMonthsCount > 0
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [unitsData, transactionsData] = await Promise.all([
+        const [unitsData, transactionsData, itemsData] = await Promise.all([
           apiFetch<Unit[]>("/api/units"),
           apiFetch<StockTransaction[]>("/api/transactions"),
+          apiFetch<Item[]>("/api/items"),
         ])
 
-        setUnits(unitsData)
-        setTransactions(transactionsData)
+        setUnits(unitsData || [])
+        setTransactions(transactionsData || [])
+        setItems(itemsData || [])
       } catch (error) {
         console.error("Gagal memuat data keuntungan:", error)
       } finally {
@@ -88,19 +119,95 @@ export default function KeuntunganPage() {
     fetchData()
   }, [])
 
-  // Calculate revenue from completed units
-  const completedUnits = units.filter((u) => u.status === "selesai" || u.status === "check-out")
-  const totalPendapatan = completedUnits.reduce((sum, u) => sum + (u.final_cost || u.estimated_cost), 0)
+  const itemPriceMap = useMemo(() => {
+    return items.reduce<Record<string, number>>((acc, item) => {
+      acc[item.id] = item.price
+      return acc
+    }, {})
+  }, [items])
 
-  // Calculate expenses from stock transactions (purchases)
-  const stockExpenses = transactions.filter((t) => t.type === "masuk").reduce((sum, t) => sum + t.quantity * 10000, 0) // Assuming average cost per unit
+  const checkoutUnits = units.filter(
+    (u) =>
+      (u.status === "selesai" || u.status === "check-out") &&
+      isWithinSelectedMonths(u.check_out_date ?? u.check_in_date),
+  )
+  const unitsRevenue = checkoutUnits.reduce((sum, u) => sum + (u.final_cost ?? u.estimated_cost ?? 0), 0)
 
-  const totalPengeluaran = stockExpenses || totalPendapatan * 0.6 // Fallback to 60% of revenue
+  const stockTransactionsIn = transactions.filter((t) => t.type === "masuk" && isWithinSelectedMonths(t.date))
+
+  // Calculate expenses from stock transactions (purchases) within selected months
+  const stockExpenses = stockTransactionsIn.reduce((sum, t) => {
+    const price = t.item_id ? itemPriceMap[t.item_id] : undefined
+    if (price === undefined) {
+      return sum
+    }
+    return sum + price * t.quantity
+  }, 0)
+
+  const previousCheckoutUnits = hasPreviousPeriod
+    ? units.filter(
+        (u) =>
+          (u.status === "selesai" || u.status === "check-out") &&
+          isWithinMonthSet(u.check_out_date ?? u.check_in_date, previousMonthSet),
+      )
+    : []
+  const previousUnitsRevenue = previousCheckoutUnits.reduce((sum, u) => sum + (u.final_cost ?? u.estimated_cost ?? 0), 0)
+
+  const previousStockTransactionsIn = hasPreviousPeriod
+    ? transactions.filter((t) => t.type === "masuk" && isWithinMonthSet(t.date, previousMonthSet))
+    : []
+  const previousStockExpenses = previousStockTransactionsIn.reduce((sum, t) => {
+    const price = t.item_id ? itemPriceMap[t.item_id] : undefined
+    if (price === undefined) {
+      return sum
+    }
+    return sum + price * t.quantity
+  }, 0)
+
+  const totalPendapatan = unitsRevenue
+
+  const payrollExpenses = EMPLOYEE_SALARY_PER_PERSON * EMPLOYEE_COUNT * monthsCount
+  const electricityExpenses = ELECTRICITY_TOP_UP_COST * ELECTRICITY_TOP_UPS * monthsCount
+  const otherOperationalExpenses = OTHER_OPERATIONAL_EXPENSE * monthsCount
+
+  const previousPayrollExpenses = EMPLOYEE_SALARY_PER_PERSON * EMPLOYEE_COUNT * previousMonthsCount
+  const previousElectricityExpenses = ELECTRICITY_TOP_UP_COST * ELECTRICITY_TOP_UPS * previousMonthsCount
+  const previousOperationalExpenses = OTHER_OPERATIONAL_EXPENSE * previousMonthsCount
+
+  const expenseDetails = [
+    { category: "Pembelian Stok Barang", amount: stockExpenses },
+    { category: "Gaji Karyawan", amount: payrollExpenses },
+    { category: "Listrik & Air", amount: electricityExpenses },
+    { category: "Operasional Lainnya", amount: otherOperationalExpenses },
+  ]
+
+  const totalPengeluaran = expenseDetails.reduce((sum, exp) => sum + exp.amount, 0)
   const totalKeuntungan = totalPendapatan - totalPengeluaran
   const profitMargin = totalPendapatan > 0 ? ((totalKeuntungan / totalPendapatan) * 100).toFixed(1) : "0"
 
+  const previousTotalPengeluaran =
+    previousStockExpenses + previousPayrollExpenses + previousElectricityExpenses + previousOperationalExpenses
+  const previousKeuntungan = previousUnitsRevenue - previousTotalPengeluaran
+
+  const calculatePercentageChange = (current: number, previous: number) => {
+    if (!hasPreviousPeriod || previous === 0) return null
+    return ((current - previous) / Math.abs(previous)) * 100
+  }
+
+  const revenueTrendValue = calculatePercentageChange(totalPendapatan, previousUnitsRevenue)
+  const expenseTrendValue = calculatePercentageChange(totalPengeluaran, previousTotalPengeluaran)
+  const profitTrendValue = calculatePercentageChange(totalKeuntungan, previousKeuntungan)
+
+  const toTrendMetric = (value: number | null) => Number((value ?? 0).toFixed(1))
+  const revenueTrendMetric = toTrendMetric(revenueTrendValue)
+  const expenseTrendMetric = toTrendMetric(expenseTrendValue)
+  const profitTrendMetric = toTrendMetric(profitTrendValue)
+  const revenueTrendPositive = (revenueTrendValue ?? 0) >= 0
+  const expenseTrendPositive = (expenseTrendValue ?? 0) <= 0
+  const profitTrendPositive = (profitTrendValue ?? 0) >= 0
+
   // Calculate service revenue breakdown
-  const serviceRevenue = completedUnits.reduce(
+  const serviceRevenue = checkoutUnits.reduce(
     (acc, unit) => {
       const serviceName =
         unit.service_type === "servis"
@@ -123,39 +230,74 @@ export default function KeuntunganPage() {
   }))
 
   // Calculate expense breakdown based on total expenses
-  const expenseBreakdown = expenseCategories.map((cat) => ({
-    ...cat,
-    amount: Math.round(totalPengeluaran * (cat.percentage / 100)),
-  }))
+  const expenseBreakdown =
+    totalPengeluaran > 0
+      ? expenseDetails.map((expense) => ({
+          ...expense,
+          percentage: Math.round((expense.amount / totalPengeluaran) * 100),
+        }))
+      : expenseDetails.map((expense) => ({ ...expense, percentage: 0 }))
 
-  // Monthly data (simulated based on actual data)
-  const monthlyData = monthOptions
-    .slice(
-      Math.min(Number.parseInt(startMonth), Number.parseInt(endMonth)),
-      Math.max(Number.parseInt(startMonth), Number.parseInt(endMonth)) + 1,
+  // Monthly data (simulated based on actual data) dengan faktor deterministik agar stabil
+  const monthlyData = selectedMonths.map((month) => {
+    const monthIndex = Number.parseInt(month.value)
+    const monthTransactionsSet = new Set([monthIndex])
+    const monthUnits = checkoutUnits.filter((u) =>
+      isWithinMonthSet(u.check_out_date ?? u.check_in_date, monthTransactionsSet),
     )
-    .map((month, idx) => ({
+    const monthRevenue = monthUnits.reduce((sum, u) => sum + (u.final_cost ?? u.estimated_cost ?? 0), 0)
+
+    const monthStockTransactions = stockTransactionsIn.filter((t) => isWithinMonthSet(t.date, monthTransactionsSet))
+    const monthStockExpenses = monthStockTransactions.reduce((sum, t) => {
+      const price = t.item_id ? itemPriceMap[t.item_id] : undefined
+      if (price === undefined) {
+        return sum
+      }
+      return sum + price * t.quantity
+    }, 0)
+
+    const monthPayroll = EMPLOYEE_SALARY_PER_PERSON * EMPLOYEE_COUNT
+    const monthElectricity = ELECTRICITY_TOP_UP_COST * ELECTRICITY_TOP_UPS
+    const monthOperational = OTHER_OPERATIONAL_EXPENSE
+
+    const monthExpenses = monthStockExpenses + monthPayroll + monthElectricity + monthOperational
+    const monthProfit = monthRevenue - monthExpenses
+
+    return {
       month: month.label.slice(0, 3),
-      pendapatan: Math.round((totalPendapatan / 12) * (0.8 + Math.random() * 0.4)),
-      pengeluaran: Math.round((totalPengeluaran / 12) * (0.8 + Math.random() * 0.4)),
-      keuntungan: Math.round((totalKeuntungan / 12) * (0.8 + Math.random() * 0.4)),
-    }))
+      pendapatan: monthRevenue,
+      pengeluaran: monthExpenses,
+      keuntungan: monthProfit,
+      positiveProfit: monthProfit > 0 ? monthProfit : null,
+      negativeProfit: monthProfit < 0 ? monthProfit : null,
+    }
+  })
+  const defaultProfitColor = monthlyData[0]?.keuntungan >= 0 ? "#22c55e" : "#ef4444"
+  const profitColorStops =
+    monthlyData.length > 1
+      ? monthlyData.map((data, idx) => ({
+          offset: idx / (monthlyData.length - 1),
+          color: data.keuntungan >= 0 ? "#22c55e" : "#ef4444",
+        }))
+      : [
+          {
+            offset: 0,
+            color: defaultProfitColor,
+          },
+          {
+            offset: 1,
+            color: defaultProfitColor,
+          },
+        ]
 
   // Recent transactions for display
   const recentFinancialTx = [
-    ...completedUnits.slice(0, 3).map((u) => ({
+    ...checkoutUnits.map((u) => ({
       id: u.id,
       description: `${u.service_type === "servis" ? "Servis" : u.service_type} ${u.brand} - ${u.owner_name}`,
       type: "income" as const,
-      amount: u.final_cost || u.estimated_cost,
-      date: u.check_out_date || u.check_in_date,
-    })),
-    ...transactions.slice(0, 2).map((t) => ({
-      id: t.id,
-      description: `Pembelian ${t.item_name}`,
-      type: "expense" as const,
-      amount: t.quantity * 10000,
-      date: t.created_at,
+      amount: u.final_cost ?? u.estimated_cost ?? 0,
+      date: u.check_out_date ?? u.check_in_date,
     })),
   ]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -167,6 +309,42 @@ export default function KeuntunganPage() {
     tooltip: isDark ? "#1f2937" : "#ffffff",
     tooltipBorder: isDark ? "#374151" : "#e5e7eb",
     tooltipText: isDark ? "#f3f4f6" : "#111827",
+  }
+
+  const renderProfitTooltip = ({
+    active,
+    payload,
+    label,
+  }: {
+    active?: boolean
+    payload?: {
+      value: number
+      dataKey: string
+    }[]
+    label?: string
+  }) => {
+    if (!active || !payload || payload.length === 0) {
+      return null
+    }
+    const profitEntry = payload.find((entry) => entry.dataKey === "keuntungan") ?? payload[0]
+    const value = profitEntry?.value ?? 0
+    const isPositive = value >= 0
+
+    return (
+      <div
+        style={{
+          backgroundColor: chartColors.tooltip,
+          border: `1px solid ${chartColors.tooltipBorder}`,
+          borderRadius: "8px",
+          padding: "8px 12px",
+        }}
+      >
+        <p style={{ color: chartColors.tooltipText, margin: 0 }}>{label}</p>
+        <p style={{ color: isPositive ? "#22c55e" : "#ef4444", margin: "4px 0 0" }}>
+          Keuntungan {isPositive ? "Positif" : "Negatif"} : {formatCurrency(value)}
+        </p>
+      </div>
+    )
   }
 
   const handlePrint = () => {
@@ -345,29 +523,32 @@ export default function KeuntunganPage() {
             title="Total Pendapatan"
             value={formatCurrency(totalPendapatan)}
             icon={DollarSign}
-            trend={{ value: 15, positive: true }}
+            trend={{ value: revenueTrendMetric, positive: revenueTrendPositive }}
             variant="success"
+            valueClassName={() => (totalPendapatan < 0 ? "text-destructive" : "text-success")}
           />
           <StatCard
             title="Total Pengeluaran"
             value={formatCurrency(totalPengeluaran)}
             icon={Wallet}
-            trend={{ value: 8, positive: false }}
+            trend={{ value: expenseTrendMetric, positive: expenseTrendPositive }}
             variant="destructive"
+            valueClassName={() => (totalPengeluaran < 0 ? "text-destructive" : "text-success")}
           />
           <StatCard
             title="Keuntungan Bersih"
             value={formatCurrency(totalKeuntungan)}
             icon={PiggyBank}
-            trend={{ value: 22, positive: true }}
-            variant="success"
+            trend={{ value: profitTrendMetric, positive: profitTrendPositive }}
+            subtitle={totalKeuntungan < 0 ? "Rugi bersih" : "Laba bersih"}
+            valueClassName={() => (totalKeuntungan < 0 ? "text-destructive" : "text-success")}
           />
           <StatCard
             title="Margin Keuntungan"
             value={`${profitMargin}%`}
             icon={TrendingUp}
             subtitle="Dari total pendapatan"
-            variant="default"
+            valueClassName={() => (Number(profitMargin) < 0 ? "text-destructive" : "text-success")}
           />
         </div>
 
@@ -383,31 +564,50 @@ export default function KeuntunganPage() {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={monthlyData}>
                     <defs>
-                      <linearGradient id="colorKeuntungan" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="colorProfitPositive" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
                         <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="colorProfitNegative" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id="profitLineGradient" x1="0" y1="0" x2="1" y2="0">
+                        {profitColorStops.map((stop, idx) => (
+                          <stop key={idx} offset={`${stop.offset * 100}%`} stopColor={stop.color} />
+                        ))}
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} />
                     <XAxis dataKey="month" stroke={chartColors.text} fontSize={11} />
                     <YAxis stroke={chartColors.text} fontSize={11} tickFormatter={(value) => `${value / 1000000}jt`} />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: chartColors.tooltip,
-                        border: `1px solid ${chartColors.tooltipBorder}`,
-                        borderRadius: "8px",
-                      }}
-                      labelStyle={{ color: chartColors.tooltipText }}
-                      formatter={(value: number) => formatCurrency(value)}
+                    <Tooltip content={renderProfitTooltip} cursor={{ stroke: chartColors.text, strokeDasharray: "3 3" }} />
+                    <Area
+                      type="monotone"
+                      dataKey="negativeProfit"
+                      stroke="#ef4444"
+                      strokeWidth={2}
+                      fillOpacity={1}
+                      fill="url(#colorProfitNegative)"
+                      isAnimationActive={false}
                     />
                     <Area
                       type="monotone"
-                      dataKey="keuntungan"
+                      dataKey="positiveProfit"
                       stroke="#22c55e"
                       strokeWidth={2}
                       fillOpacity={1}
-                      fill="url(#colorKeuntungan)"
-                      name="Keuntungan"
+                      fill="url(#colorProfitPositive)"
+                      isAnimationActive={false}
+                      connectNulls
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="keuntungan"
+                      stroke="url(#profitLineGradient)"
+                      strokeWidth={3}
+                      dot={false}
+                      isAnimationActive={false}
                     />
                   </AreaChart>
                 </ResponsiveContainer>

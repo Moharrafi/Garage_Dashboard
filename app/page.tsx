@@ -70,7 +70,7 @@ export default function DashboardPage() {
 
         setItems(itemsData)
         setUnits(unitsData)
-        setTransactions(transactionsData.slice(0, 5))
+        setTransactions(transactionsData || [])
       } catch (error) {
         console.error("Gagal memuat data dashboard:", error)
       } finally {
@@ -80,10 +80,33 @@ export default function DashboardPage() {
     fetchData()
   }, [])
 
+  const now = new Date()
+  const currentMonthKey = `${now.getFullYear()}-${now.getMonth()}`
+  const previousMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+  const previousMonthKey = `${previousMonthDate.getFullYear()}-${previousMonthDate.getMonth()}`
   const lowStockItems = items.filter((item) => item.stock <= item.min_stock)
   const activeUnits = units.filter((unit) => unit.status !== "check-out")
   const completedUnits = units.filter((unit) => unit.status === "check-out" || unit.status === "selesai")
-  const totalRevenue = completedUnits.reduce((sum, unit) => sum + (unit.final_cost || unit.estimated_cost), 0)
+  const itemPriceMap = items.reduce<Record<string, number>>((acc, item) => {
+    acc[item.id] = item.price
+    return acc
+  }, {})
+
+  const totalRevenue = completedUnits.reduce((sum, unit) => {
+    const monthKey = getMonthKey(unit.check_out_date || unit.check_in_date)
+    if (monthKey !== currentMonthKey) {
+      return sum
+    }
+    return sum + (unit.final_cost || unit.estimated_cost)
+  }, 0)
+
+  const previousRevenue = completedUnits.reduce((sum, unit) => {
+    const monthKey = getMonthKey(unit.check_out_date || unit.check_in_date)
+    if (monthKey !== previousMonthKey) {
+      return sum
+    }
+    return sum + (unit.final_cost || unit.estimated_cost)
+  }, 0)
 
   // Calculate service distribution from units
   const serviceDistribution = units.reduce(
@@ -109,10 +132,51 @@ export default function DashboardPage() {
     tooltipText: isDark ? "#f3f4f6" : "#111827",
   }
 
-  const itemPriceMap = items.reduce<Record<string, number>>((acc, item) => {
-    acc[item.id] = item.price
+  const currentMonthTransactions = transactions.filter(
+    (tx) => getMonthKey(tx.date || tx.created_at) === currentMonthKey,
+  )
+  const totalStock = items.reduce((sum, item) => sum + item.stock, 0)
+  const netStockChangeCurrent = currentMonthTransactions.reduce((sum, tx) => {
+    const change = tx.type === "masuk" ? tx.quantity : -tx.quantity
+    return sum + change
+  }, 0)
+  const previousTotalStock = totalStock - netStockChangeCurrent
+
+  const transactionChangeByItem = currentMonthTransactions.reduce<Record<string, number>>((acc, tx) => {
+    if (!tx.item_id) return acc
+    const change = tx.type === "masuk" ? tx.quantity : -tx.quantity
+    acc[tx.item_id] = (acc[tx.item_id] || 0) + change
     return acc
   }, {})
+
+  const previousLowStockCount = items.filter((item) => {
+    const previousStock = item.stock - (transactionChangeByItem[item.id] || 0)
+    return previousStock <= item.min_stock
+  }).length
+
+  const calculateTrend = (current: number, previous: number, invert = false) => {
+    if (previous === 0) {
+      if (current === 0) {
+        return { value: 0, positive: true }
+      }
+      const value = 100
+      const positive = invert ? current <= previous : current >= previous
+      return { value, positive }
+    }
+    const percentChange = ((current - previous) / Math.abs(previous)) * 100
+    return { value: Number(percentChange.toFixed(1)), positive: invert ? percentChange <= 0 : percentChange >= 0 }
+  }
+
+  const stockTrend = calculateTrend(totalStock, previousTotalStock)
+  const revenueTrendData = calculateTrend(totalRevenue, previousRevenue)
+  const lowStockTrend = calculateTrend(lowStockItems.length, previousLowStockCount, true)
+
+  const getTransactionTime = (tx: StockTransaction) => {
+    const dateString = tx.created_at || tx.date
+    return dateString ? new Date(dateString).getTime() : 0
+  }
+  const sortedTransactions = [...transactions].sort((a, b) => getTransactionTime(b) - getTransactionTime(a))
+  const recentTransactions = sortedTransactions.slice(0, 5)
 
   const months = getPastMonths(6)
 
@@ -156,10 +220,11 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
           <StatCard
             title="Total Stok Barang"
-            value={items.reduce((sum, item) => sum + item.stock, 0)}
+            value={totalStock}
             subtitle={`${items.length} jenis barang`}
             icon={Package}
-            trend={{ value: 12, positive: true }}
+            trend={stockTrend}
+            valueClassName="text-success"
           />
           <StatCard
             title="Unit Dalam Proses"
@@ -167,13 +232,15 @@ export default function DashboardPage() {
             subtitle="Menunggu selesai"
             icon={Car}
             variant="success"
+            valueClassName="text-success"
           />
           <StatCard
             title="Pendapatan Bulan Ini"
             value={formatCurrency(totalRevenue)}
             icon={TrendingUp}
-            trend={{ value: 8, positive: true }}
+            trend={revenueTrendData}
             variant="success"
+            valueClassName={() => (totalRevenue >= 0 ? "text-success" : "text-destructive")}
           />
           <StatCard
             title="Stok Menipis"
@@ -181,6 +248,8 @@ export default function DashboardPage() {
             subtitle="Perlu restok segera"
             icon={AlertTriangle}
             variant="warning"
+            trend={lowStockTrend}
+            valueClassName="text-warning"
           />
         </div>
 
@@ -298,10 +367,10 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3 lg:space-y-4">
-                {transactions.length === 0 ? (
+                {recentTransactions.length === 0 ? (
                   <p className="text-muted-foreground text-sm text-center py-4">Belum ada transaksi</p>
                 ) : (
-                  transactions.map((tx) => (
+                  recentTransactions.map((tx) => (
                     <div
                       key={tx.id}
                       className="flex items-center justify-between py-2 border-b border-border last:border-0"
@@ -330,7 +399,9 @@ export default function DashboardPage() {
                           {tx.type === "masuk" ? "+" : "-"}
                           {tx.quantity}
                         </p>
-                        <p className="text-[10px] lg:text-xs text-muted-foreground">{formatDate(tx.created_at)}</p>
+                        <p className="text-[10px] lg:text-xs text-muted-foreground">
+                          {formatDate(tx.created_at || tx.date || new Date().toISOString())}
+                        </p>
                       </div>
                     </div>
                   ))

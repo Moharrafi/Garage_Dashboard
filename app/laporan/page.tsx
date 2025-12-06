@@ -183,36 +183,36 @@ export default function LaporanPage() {
               {/* Stock Report */}
               {reportType === "stok" && (
                 <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-border">
-                        <TableHead className="text-muted-foreground">No</TableHead>
-                        <TableHead className="text-muted-foreground">Nama Barang</TableHead>
-                        <TableHead className="text-muted-foreground">Kategori</TableHead>
-                        <TableHead className="text-muted-foreground text-right">Stok</TableHead>
-                        <TableHead className="text-muted-foreground text-right">Min. Stok</TableHead>
-                        <TableHead className="text-muted-foreground text-right">Harga</TableHead>
-                        <TableHead className="text-muted-foreground">Status</TableHead>
+                <Table className="min-w-[820px] table-auto md:table-fixed border-separate border-spacing-0">
+                  <TableHeader>
+                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
+                      <TableHead>No</TableHead>
+                      <TableHead>Nama Barang</TableHead>
+                      <TableHead>Kategori</TableHead>
+                      <TableHead className="text-right">Stok</TableHead>
+                      <TableHead className="text-right">Min. Stok</TableHead>
+                      <TableHead className="text-right">Harga</TableHead>
+                      <TableHead>Status</TableHead>
                       </TableRow>
                     </TableHeader>
-                    <TableBody>
+                      <TableBody className="divide-y divide-border/40">
                       {items.map((item, index) => (
-                        <TableRow key={item.id} className="border-border">
-                          <TableCell className="text-muted-foreground">{index + 1}</TableCell>
-                          <TableCell className="font-medium text-card-foreground">{item.name}</TableCell>
-                          <TableCell className="text-muted-foreground">{item.category}</TableCell>
-                          <TableCell className="text-right text-card-foreground">
+                        <TableRow key={item.id} className="border-b border-border/60 last:border-b-0">
+                          <TableCell className="text-muted-foreground py-4">{index + 1}</TableCell>
+                          <TableCell className="font-medium text-card-foreground py-4">{item.name}</TableCell>
+                          <TableCell className="text-muted-foreground py-4">{item.category}</TableCell>
+                          <TableCell className="text-right text-card-foreground py-4">
                             {item.stock} {item.unit}
                           </TableCell>
-                          <TableCell className="text-right text-muted-foreground">{item.min_stock}</TableCell>
-                          <TableCell className="text-right text-card-foreground">
+                          <TableCell className="text-right text-muted-foreground py-4">{item.min_stock}</TableCell>
+                          <TableCell className="text-right text-card-foreground py-4">
                             {formatCurrency(item.price)}
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="py-4">
                             {item.stock <= item.min_stock ? (
-                              <Badge className="bg-destructive/20 text-destructive">Menipis</Badge>
+                              <Badge className="bg-destructive/15 text-destructive border border-destructive/30">Menipis</Badge>
                             ) : (
-                              <Badge className="bg-success/20 text-success">Tersedia</Badge>
+                              <Badge className="bg-success/15 text-success border border-success/30">Tersedia</Badge>
                             )}
                           </TableCell>
                         </TableRow>
@@ -232,20 +232,20 @@ export default function LaporanPage() {
               {/* Transaction Report */}
               {reportType === "transaksi" && (
                 <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-border">
-                        <TableHead className="text-muted-foreground">No</TableHead>
-                        <TableHead className="text-muted-foreground">Tanggal</TableHead>
-                        <TableHead className="text-muted-foreground">Tipe</TableHead>
-                        <TableHead className="text-muted-foreground">Nama Barang</TableHead>
-                        <TableHead className="text-muted-foreground text-right">Jumlah</TableHead>
-                        <TableHead className="text-muted-foreground">Keterangan</TableHead>
+                <Table className="min-w-[820px] table-auto md:table-fixed border-separate border-spacing-0">
+                  <TableHeader>
+                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
+                      <TableHead>No</TableHead>
+                      <TableHead>Tanggal</TableHead>
+                      <TableHead>Tipe</TableHead>
+                      <TableHead>Nama Barang</TableHead>
+                      <TableHead className="text-right">Jumlah</TableHead>
+                      <TableHead>Keterangan</TableHead>
                       </TableRow>
                     </TableHeader>
-                    <TableBody>
+                <TableBody className="divide-y divide-border/40">
                       {filteredTransactions.map((tx, index) => (
-                        <TableRow key={tx.id} className="border-border">
+                        <TableRow key={tx.id} className="border-b border-border/60 last:border-b-0">
                           <TableCell className="text-muted-foreground">{index + 1}</TableCell>
                           <TableCell className="text-muted-foreground">{formatDate(tx.created_at)}</TableCell>
                           <TableCell>
@@ -285,21 +285,21 @@ export default function LaporanPage() {
               {/* Unit Report */}
               {reportType === "unit" && (
                 <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="border-border">
-                        <TableHead className="text-muted-foreground">No</TableHead>
-                        <TableHead className="text-muted-foreground">Kendaraan</TableHead>
-                        <TableHead className="text-muted-foreground">Pemilik</TableHead>
-                        <TableHead className="text-muted-foreground">Layanan</TableHead>
-                        <TableHead className="text-muted-foreground">Check-in</TableHead>
-                        <TableHead className="text-muted-foreground">Check-out</TableHead>
-                        <TableHead className="text-muted-foreground text-right">Biaya</TableHead>
+                <Table className="min-w-[820px] table-auto md:table-fixed border-separate border-spacing-0">
+                  <TableHeader>
+                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
+                      <TableHead>No</TableHead>
+                      <TableHead>Kendaraan</TableHead>
+                      <TableHead>Pemilik</TableHead>
+                      <TableHead>Layanan</TableHead>
+                      <TableHead>Check-in</TableHead>
+                      <TableHead>Check-out</TableHead>
+                      <TableHead className="text-right">Biaya</TableHead>
                       </TableRow>
                     </TableHeader>
-                    <TableBody>
+                    <TableBody className="divide-y divide-border/40">
                       {filteredUnits.map((unit, index) => (
-                        <TableRow key={unit.id} className="border-border">
+                        <TableRow key={unit.id} className="border-b border-border/60 last:border-b-0">
                           <TableCell className="text-muted-foreground">{index + 1}</TableCell>
                           <TableCell className="text-card-foreground">
                             {unit.brand} ({unit.vehicle_type})

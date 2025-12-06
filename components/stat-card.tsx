@@ -12,9 +12,18 @@ interface StatCardProps {
     positive: boolean
   }
   variant?: "default" | "success" | "warning" | "destructive"
+  valueClassName?: string | ((value: string | number) => string | undefined)
 }
 
-export function StatCard({ title, value, subtitle, icon: Icon, trend, variant = "default" }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  subtitle,
+  icon: Icon,
+  trend,
+  variant = "default",
+  valueClassName,
+}: StatCardProps) {
   const variantStyles = {
     default: "bg-primary/10 text-primary",
     success: "bg-success/10 text-success",
@@ -28,7 +37,14 @@ export function StatCard({ title, value, subtitle, icon: Icon, trend, variant = 
         <div className="flex items-start justify-between gap-2">
           <div className="space-y-0.5 lg:space-y-1 min-w-0 flex-1">
             <p className="text-xs lg:text-sm text-muted-foreground truncate">{title}</p>
-            <p className="text-lg lg:text-2xl font-bold text-card-foreground truncate">{value}</p>
+            <p
+              className={cn(
+                "text-lg lg:text-2xl font-bold text-card-foreground truncate",
+                typeof valueClassName === "function" ? valueClassName(value) : valueClassName,
+              )}
+            >
+              {value}
+            </p>
             {subtitle && <p className="text-[10px] lg:text-xs text-muted-foreground truncate">{subtitle}</p>}
             {trend && (
               <p
