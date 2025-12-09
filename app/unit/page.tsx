@@ -440,7 +440,7 @@ export default function UnitPage() {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <CardTitle className="text-card-foreground whitespace-nowrap">Daftar Unit</CardTitle>
               <div className="flex flex-col gap-3 w-full lg:flex-row lg:items-center lg:gap-4 lg:justify-end">
-                <div className="flex flex-col lg:flex-row gap-3 w-full lg:w-auto">
+                <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                   <div className="relative flex-1 min-w-[220px]">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -451,7 +451,7 @@ export default function UnitPage() {
                     />
                   </div>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="bg-secondary border-border w-full md:w-48">
+                    <SelectTrigger className="bg-secondary border-border w-full sm:w-48">
                       <SelectValue placeholder="Pilih Status" />
                     </SelectTrigger>
                     <SelectContent>
@@ -464,12 +464,12 @@ export default function UnitPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-3 w-full lg:w-auto lg:justify-end lg:items-center">
-                  <div className="flex border border-border rounded-lg overflow-hidden w-full md:w-auto">
+                <div className="flex flex-col lg:flex-row gap-3 w-full lg:w-auto lg:justify-between lg:items-center">
+                  <div className="flex border border-border rounded-full overflow-hidden w-full sm:w-auto justify-center">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className={`rounded-none h-9 flex-1 md:flex-none ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
+                      className={`rounded-none h-9 flex-1 ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
                       onClick={() => setViewMode("table")}
                       aria-label="Tampilan tabel"
                     >
@@ -478,7 +478,7 @@ export default function UnitPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className={`rounded-none h-9 flex-1 md:flex-none ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
+                      className={`rounded-none h-9 flex-1 ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
                       onClick={() => setViewMode("grid")}
                       aria-label="Tampilan grid"
                     >

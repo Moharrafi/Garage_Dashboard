@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import {
   User,
   Mail,
@@ -69,6 +69,8 @@ export default function ProfilPage() {
   const [savingProfile, setSavingProfile] = useState(false)
   const [savingNotifications, setSavingNotifications] = useState(false)
   const [savingPassword, setSavingPassword] = useState(false)
+  const [uploadingAvatar, setUploadingAvatar] = useState(false)
+  const avatarInputRef = useRef<HTMLInputElement | null>(null)
   const { showToast } = useToast()
 
   const formatJoinDate = (value?: string | null) => {
@@ -194,6 +196,41 @@ export default function ProfilPage() {
     }
   }
 
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target
+    const file = input.files?.[0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append("avatar", file)
+
+    setUploadingAvatar(true)
+    try {
+      const response = await fetch("/api/profile/avatar", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const message = await response.text()
+        throw new Error(message || "Gagal mengunggah foto profil")
+      }
+
+      const data = await response.json()
+
+      setProfileData((prev) => (prev ? { ...prev, avatar_url: data.avatar_url } : prev))
+      setProfileForm((prev) => ({ ...prev, avatar_url: data.avatar_url }))
+      showToast("Foto profil berhasil diperbarui", "success")
+    } catch (error) {
+      console.error("Gagal mengunggah foto profil:", error)
+      const message = error instanceof Error ? error.message : "Gagal mengunggah foto profil"
+      showToast(message, "error")
+    } finally {
+      input.value = ""
+      setUploadingAvatar(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -236,23 +273,35 @@ export default function ProfilPage() {
                 <div className="grid gap-6 lg:grid-cols-3">
                   <Card className="bg-card border-border lg:col-span-1">
                     <CardContent className="pt-6">
-                      <div className="flex flex-col items-center text-center">
-                        <div className="relative">
-                          <Avatar className="h-24 w-24 sm:h-32 sm:w-32">
-                            <AvatarImage src={profileForm.avatar_url || "/diverse-user-avatars.png"} alt="User" />
-                            <AvatarFallback className="bg-primary text-primary-foreground text-2xl sm:text-3xl">
-                              {getInitials(profileForm.full_name || "Admin GTA Garage")}
-                            </AvatarFallback>
-                          </Avatar>
-                          <Button
-                            size="icon"
-                            variant={isEditing ? "secondary" : "ghost"}
-                            className="absolute bottom-0 right-0 h-8 w-8 rounded-full"
-                            disabled={!isEditing}
-                          >
-                            <Camera className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        <div className="flex flex-col items-center text-center">
+                          <div className="relative">
+                            <Avatar className="h-24 w-24 sm:h-32 sm:w-32">
+                              <AvatarImage src={profileForm.avatar_url || "/diverse-user-avatars.png"} alt="User" />
+                              <AvatarFallback className="bg-primary text-primary-foreground text-2xl sm:text-3xl">
+                                {getInitials(profileForm.full_name || "Admin GTA Garage")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <Button
+                              size="icon"
+                              variant="secondary"
+                              className="absolute bottom-0 right-0 h-8 w-8 rounded-full"
+                              onClick={(event) => {
+                                event.preventDefault()
+                                avatarInputRef.current?.click()
+                              }}
+                              disabled={uploadingAvatar}
+                              title="Ubah foto profil"
+                            >
+                              {uploadingAvatar ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+                            </Button>
+                            <input
+                              ref={avatarInputRef}
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={handleAvatarUpload}
+                            />
+                          </div>
                         <h3 className="mt-4 text-lg font-semibold text-card-foreground">{profileForm.full_name}</h3>
                         <p className="text-sm text-muted-foreground">{profileForm.email}</p>
                         <Badge className="mt-2 bg-primary/10 text-primary border-0 capitalize">

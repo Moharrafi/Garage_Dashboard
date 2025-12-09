@@ -191,14 +191,14 @@ export default function TransaksiPage() {
 
         <Card className="bg-card border-border">
           <CardHeader>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
               <CardTitle className="text-card-foreground">Riwayat Transaksi</CardTitle>
-              <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-                <div className="relative">
+              <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                <div className="relative flex-1 min-w-[220px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Cari transaksi..."
-                    className="pl-9 w-full sm:w-64 bg-secondary border-border"
+                    className="pl-9 w-full bg-secondary border-border"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -206,7 +206,7 @@ export default function TransaksiPage() {
                 <Tabs
                   value={filterType}
                   onValueChange={(v) => setFilterType(v as typeof filterType)}
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-auto flex-shrink-0"
                 >
                   <TabsList className="bg-secondary w-full grid grid-cols-3 rounded-full p-1 gap-1 overflow-hidden">
                     <TabsTrigger
@@ -229,7 +229,7 @@ export default function TransaksiPage() {
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>
-                <div className="flex border border-border rounded-lg overflow-hidden w-full sm:w-auto">
+                <div className="flex border border-border rounded-lg overflow-hidden flex-shrink-0">
                   <Button
                     variant="ghost"
                     size="icon"
