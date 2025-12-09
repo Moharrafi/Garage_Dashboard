@@ -501,37 +501,32 @@ export default function KeuntunganPage() {
         <DashboardHeader title="Keuntungan" subtitle="Analisis pendapatan dan keuntungan bengkel" />
 
         <div className="flex flex-col sm:flex-row justify-between gap-3 mb-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
-            <div className="flex items-center gap-2">
-              <Label className="text-sm text-muted-foreground whitespace-nowrap">Dari:</Label>
-              <Select value={startMonth} onValueChange={setStartMonth}>
-                <SelectTrigger className="w-32 bg-secondary border-border">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {monthOptions.map((m) => (
-                    <SelectItem key={m.value} value={m.value}>
-                      {m.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center gap-2">
-              <Label className="text-sm text-muted-foreground whitespace-nowrap">Sampai:</Label>
-              <Select value={endMonth} onValueChange={setEndMonth}>
-                <SelectTrigger className="w-32 bg-secondary border-border">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {monthOptions.map((m) => (
-                    <SelectItem key={m.value} value={m.value}>
-                      {m.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="flex w-full items-center gap-2 text-sm sm:text-base">
+            <Select value={startMonth} onValueChange={setStartMonth}>
+              <SelectTrigger className="w-full sm:w-36 bg-secondary border-border">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {monthOptions.map((m) => (
+                  <SelectItem key={m.value} value={m.value}>
+                    {m.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <span className="text-muted-foreground whitespace-nowrap">s/d</span>
+            <Select value={endMonth} onValueChange={setEndMonth}>
+              <SelectTrigger className="w-full sm:w-36 bg-secondary border-border">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {monthOptions.map((m) => (
+                  <SelectItem key={m.value} value={m.value}>
+                    {m.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <Button onClick={handlePrint} className="bg-primary text-primary-foreground">
             <Printer className="h-4 w-4 mr-2" />

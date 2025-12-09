@@ -189,26 +189,22 @@ function LaporanPageContent() {
               </Tabs>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                <div className="flex w-full items-center gap-2 text-sm sm:text-base flex-nowrap overflow-x-auto pb-1">
-                  <div className="flex items-center gap-1 flex-1 min-w-[150px]">
-                    <span className="text-muted-foreground whitespace-nowrap">Dari:</span>
-                    <Input
-                      type="date"
-                      value={dateFrom}
-                      onChange={(e) => setDateFrom(e.target.value)}
-                      className="bg-secondary border-border flex-1 min-w-[110px]"
-                      placeholder="Dari"
-                    />
-                  </div>
-                  <div className="flex items-center gap-1 flex-1 min-w-[150px]">
-                    <span className="text-muted-foreground whitespace-nowrap">Sampai:</span>
-                    <Input
-                      type="date"
-                      value={dateTo}
-                      onChange={(e) => setDateTo(e.target.value)}
-                      className="bg-secondary border-border flex-1 min-w-[110px]"
-                    />
-                  </div>
+                <div className="grid grid-cols-[1fr_auto_1fr] w-full items-center gap-2 text-sm sm:text-base">
+                  <Input
+                    type="date"
+                    value={dateFrom}
+                    onChange={(e) => setDateFrom(e.target.value)}
+                    className="bg-secondary border-border w-full"
+                    placeholder="Tanggal awal"
+                  />
+                  <span className="text-muted-foreground text-center whitespace-nowrap">s/d</span>
+                  <Input
+                    type="date"
+                    value={dateTo}
+                    onChange={(e) => setDateTo(e.target.value)}
+                    className="bg-secondary border-border w-full"
+                    placeholder="Tanggal akhir"
+                  />
                 </div>
                 <Button onClick={handlePrint} className="bg-primary text-primary-foreground">
                   <Printer className="h-4 w-4 mr-2" />
