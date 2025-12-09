@@ -38,6 +38,8 @@ import { PageTransition } from "@/components/page-transition"
 
 const categories = ["Semua", "Oli", "Sparepart", "Ban", "Aki", "Cairan", "Bubuk", "Lainnya"]
 
+const darkButtonBorderClass = "dark:border-white/50 dark:hover:border-white/70"
+
 export default function StokPage() {
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(true)
@@ -251,7 +253,7 @@ export default function StokPage() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className={`rounded-none h-9 flex-1 sm:flex-none ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
+                    className={`${darkButtonBorderClass} rounded-none h-9 flex-1 sm:flex-none ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
                     onClick={() => setViewMode("table")}
                   >
                     <List className="h-4 w-4 mx-auto" />
@@ -259,7 +261,7 @@ export default function StokPage() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className={`rounded-none h-9 flex-1 sm:flex-none ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
+                    className={`${darkButtonBorderClass} rounded-none h-9 flex-1 sm:flex-none ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
                     onClick={() => setViewMode("grid")}
                   >
                     <LayoutGrid className="h-4 w-4 mx-auto" />
@@ -267,7 +269,7 @@ export default function StokPage() {
                 </div>
                 <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                   <DialogTrigger asChild>
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                    <Button className={`${darkButtonBorderClass} bg-primary text-primary-foreground hover:bg-primary/90`}>
                       <Plus className="h-4 w-4 mr-2" />
                       Tambah Barang
                     </Button>
@@ -378,10 +380,10 @@ export default function StokPage() {
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button variant="outline" onClick={() => setIsAddOpen(false)} disabled={saving}>
+                      <Button variant="outline" className={darkButtonBorderClass} onClick={() => setIsAddOpen(false)} disabled={saving}>
                         Batal
                       </Button>
-                      <Button onClick={handleAddItem} className="bg-primary text-primary-foreground" disabled={saving}>
+                      <Button onClick={handleAddItem} className={`${darkButtonBorderClass} bg-primary text-primary-foreground`} disabled={saving}>
                         {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                         Simpan
                       </Button>
@@ -442,13 +444,13 @@ export default function StokPage() {
                             </TableCell>
                             <TableCell>
                               <div className="flex justify-center gap-2">
-                                <Button variant="ghost" size="icon" onClick={() => openEditModal(item)}>
+                                <Button variant="ghost" size="icon" className={darkButtonBorderClass} onClick={() => openEditModal(item)}>
                                   <Edit className="h-4 w-4" />
                                 </Button>
                                 <Button
                                   variant="ghost"
                                   size="icon"
-                                  className="text-destructive hover:text-destructive"
+                                  className={`${darkButtonBorderClass} text-destructive hover:text-destructive`}
                                   onClick={() => openDeleteConfirm(item)}
                                 >
                                   <Trash2 className="h-4 w-4" />
@@ -507,7 +509,7 @@ export default function StokPage() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1 bg-transparent"
+                            className={`${darkButtonBorderClass} flex-1 bg-transparent`}
                             onClick={() => openEditModal(item)}
                           >
                             <Edit className="h-3 w-3 mr-1" />
@@ -516,7 +518,7 @@ export default function StokPage() {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="text-destructive hover:text-destructive bg-transparent"
+                            className={`${darkButtonBorderClass} text-destructive hover:text-destructive bg-transparent`}
                             onClick={() => openDeleteConfirm(item)}
                           >
                             <Trash2 className="h-3 w-3" />
@@ -633,10 +635,10 @@ export default function StokPage() {
               </div>
             )}
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditOpen(false)} disabled={saving}>
+              <Button variant="outline" className={darkButtonBorderClass} onClick={() => setIsEditOpen(false)} disabled={saving}>
                 Batal
               </Button>
-              <Button onClick={handleUpdateItem} className="bg-primary text-primary-foreground" disabled={saving}>
+              <Button onClick={handleUpdateItem} className={`${darkButtonBorderClass} bg-primary text-primary-foreground`} disabled={saving}>
                 {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Simpan
               </Button>

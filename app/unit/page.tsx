@@ -79,6 +79,8 @@ const statusConfig = {
   },
 }
 
+const darkButtonBorderClass = "dark:border-white/50 dark:hover:border-white/70"
+
 const serviceConfig = {
   servis: {
     label: "Servis Motor",
@@ -469,7 +471,7 @@ export default function UnitPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className={`rounded-none h-9 flex-1 ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
+                      className={`${darkButtonBorderClass} rounded-none h-9 flex-1 ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
                       onClick={() => setViewMode("table")}
                       aria-label="Tampilan tabel"
                     >
@@ -478,7 +480,7 @@ export default function UnitPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className={`rounded-none h-9 flex-1 ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
+                      className={`${darkButtonBorderClass} rounded-none h-9 flex-1 ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
                       onClick={() => setViewMode("grid")}
                       aria-label="Tampilan grid"
                     >
@@ -487,7 +489,7 @@ export default function UnitPage() {
                   </div>
                   <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                     <DialogTrigger asChild>
-                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full md:w-auto">
+                      <Button className={`${darkButtonBorderClass} bg-primary text-primary-foreground hover:bg-primary/90 w-full md:w-auto`}>
                         <Plus className="h-4 w-4 mr-2" />
                         Check-in Unit Baru
                       </Button>
@@ -608,6 +610,7 @@ export default function UnitPage() {
                       <DialogFooter>
                         <Button
                           variant="outline"
+                          className={darkButtonBorderClass}
                           onClick={() => {
                             resetForm()
                             setIsAddOpen(false)
@@ -616,7 +619,11 @@ export default function UnitPage() {
                         >
                           Batal
                         </Button>
-                        <Button onClick={handleAddUnit} className="bg-primary text-primary-foreground" disabled={saving}>
+                        <Button
+                          onClick={handleAddUnit}
+                          className={`${darkButtonBorderClass} bg-primary text-primary-foreground`}
+                          disabled={saving}
+                        >
                           {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                           Check-in
                         </Button>
@@ -709,18 +716,23 @@ export default function UnitPage() {
                               </TableCell>
                               <TableCell>
                                 <div className="flex justify-start md:justify-center gap-1 items-center">
-                                  <Button variant="ghost" size="icon" onClick={() => openViewDialog(unit)}>
+                                  <Button variant="ghost" size="icon" className={darkButtonBorderClass} onClick={() => openViewDialog(unit)}>
                                     <Eye className="h-4 w-4" />
                                   </Button>
                                   {canEdit && (
                                     <>
-                                      <Button variant="ghost" size="icon" onClick={() => openEditDialog(unit)}>
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className={darkButtonBorderClass}
+                                        onClick={() => openEditDialog(unit)}
+                                      >
                                         <Edit className="h-4 w-4" />
                                       </Button>
                                       <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="text-destructive hover:text-destructive"
+                                        className={`${darkButtonBorderClass} text-destructive hover:text-destructive`}
                                         onClick={() => openDeleteDialog(unit)}
                                       >
                                         <Trash2 className="h-4 w-4" />
@@ -731,7 +743,7 @@ export default function UnitPage() {
                                     <Button
                                       variant="outline"
                                       size="sm"
-                                      className="ml-2"
+                                      className={`${darkButtonBorderClass} ml-2`}
                                       onClick={() => openUpdateStatusDialog(unit)}
                                     >
                                       Update
@@ -800,7 +812,7 @@ export default function UnitPage() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="flex-1 bg-transparent"
+                              className={`${darkButtonBorderClass} flex-1 bg-transparent`}
                               onClick={() => openViewDialog(unit)}
                             >
                               <Eye className="h-3 w-3 mr-1" />
@@ -810,7 +822,7 @@ export default function UnitPage() {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="bg-transparent"
+                                className={`${darkButtonBorderClass} bg-transparent`}
                                 onClick={() => openUpdateStatusDialog(unit)}
                               >
                                 Update
@@ -820,7 +832,7 @@ export default function UnitPage() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-destructive hover:text-destructive flex items-center justify-center"
+                                className={`${darkButtonBorderClass} text-destructive hover:text-destructive flex items-center justify-center`}
                                 onClick={() => openDeleteDialog(unit)}
                               >
                                 <Trash2 className="h-4 w-4" />
@@ -939,10 +951,10 @@ export default function UnitPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsEditOpen(false)} disabled={saving}>
+              <Button variant="outline" className={darkButtonBorderClass} onClick={() => setIsEditOpen(false)} disabled={saving}>
                 Batal
               </Button>
-              <Button onClick={handleEditUnit} className="bg-primary text-primary-foreground" disabled={saving}>
+              <Button onClick={handleEditUnit} className={`${darkButtonBorderClass} bg-primary text-primary-foreground`} disabled={saving}>
                 {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Simpan
               </Button>
@@ -1019,7 +1031,7 @@ export default function UnitPage() {
               </div>
             )}
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsViewOpen(false)}>
+              <Button variant="outline" className={darkButtonBorderClass} onClick={() => setIsViewOpen(false)}>
                 Tutup
               </Button>
             </DialogFooter>
@@ -1086,10 +1098,10 @@ export default function UnitPage() {
               )}
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsUpdateStatusOpen(false)} disabled={saving}>
+              <Button variant="outline" className={darkButtonBorderClass} onClick={() => setIsUpdateStatusOpen(false)} disabled={saving}>
                 Batal
               </Button>
-              <Button onClick={handleUpdateStatus} className="bg-primary text-primary-foreground" disabled={saving}>
+              <Button onClick={handleUpdateStatus} className={`${darkButtonBorderClass} bg-primary text-primary-foreground`} disabled={saving}>
                 {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Update Status
               </Button>
