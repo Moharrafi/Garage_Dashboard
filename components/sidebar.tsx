@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -47,6 +47,12 @@ export function Sidebar() {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.documentElement.style.setProperty("--sidebar-width", collapsed ? "4rem" : "16rem")
+    }
+  }, [collapsed])
 
   return (
     <>

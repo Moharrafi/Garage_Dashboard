@@ -360,7 +360,7 @@ export default function UnitPage() {
     return (
       <div className="min-h-screen bg-background">
         <Sidebar />
-        <main className="lg:ml-64 p-4 lg:p-6 transition-all duration-300">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-4 lg:p-6 transition-all duration-300">
           <DashboardHeader title="Check-in & Check-out Unit" subtitle="Kelola unit kendaraan yang masuk untuk servis" />
           <div className="flex items-center justify-center h-64">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -375,7 +375,7 @@ export default function UnitPage() {
       <Sidebar />
 
       <PageTransition>
-        <main className="lg:ml-64 p-4 lg:p-6 transition-all duration-300">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-4 lg:p-6 transition-all duration-300">
         <DashboardHeader title="Check-in & Check-out Unit" subtitle="Kelola unit kendaraan yang masuk untuk servis" />
 
         {/* Status Cards */}

@@ -485,7 +485,7 @@ export default function KeuntunganPage() {
     return (
       <div className="min-h-screen bg-background">
         <Sidebar />
-        <main className="lg:ml-64 p-4 lg:p-6 flex items-center justify-center min-h-screen">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-4 lg:p-6 flex items-center justify-center min-h-screen">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </main>
       </div>
@@ -497,7 +497,7 @@ export default function KeuntunganPage() {
       <Sidebar />
 
       <PageTransition>
-        <main className="lg:ml-64 p-4 lg:p-6 transition-all duration-300" ref={printRef}>
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-4 lg:p-6 transition-all duration-300" ref={printRef}>
         <DashboardHeader title="Keuntungan" subtitle="Analisis pendapatan dan keuntungan bengkel" />
 
         <div className="flex flex-col sm:flex-row justify-between gap-3 mb-6">

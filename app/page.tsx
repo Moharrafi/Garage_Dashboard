@@ -202,7 +202,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-background">
         <Sidebar />
-        <main className="lg:ml-64 p-4 lg:p-6 flex items-center justify-center min-h-screen">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-4 lg:p-6 flex items-center justify-center min-h-screen">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </main>
       </div>
@@ -214,7 +214,7 @@ export default function DashboardPage() {
       <Sidebar />
 
       <PageTransition>
-        <main className="lg:ml-64 p-4 lg:p-6 transition-all duration-300">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-4 lg:p-6 transition-all duration-300">
         <DashboardHeader title="Dashboard" subtitle="Selamat datang kembali! Berikut ringkasan bengkel hari ini." />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">

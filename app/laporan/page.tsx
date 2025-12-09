@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { Suspense, useState, useRef, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { Sidebar } from "@/components/sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
@@ -17,6 +17,20 @@ import { apiFetch } from "@/lib/api"
 import { PageTransition } from "@/components/page-transition"
 
 export default function LaporanPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      }
+    >
+      <LaporanPageContent />
+    </Suspense>
+  )
+}
+
+function LaporanPageContent() {
   const [reportType, setReportType] = useState("stok")
   const [dateFrom, setDateFrom] = useState("")
   const [dateTo, setDateTo] = useState("")
@@ -130,7 +144,7 @@ export default function LaporanPage() {
     return (
       <div className="min-h-screen bg-background">
         <Sidebar />
-        <main className="lg:ml-64 p-6 flex items-center justify-center min-h-screen">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-6 flex items-center justify-center min-h-screen">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </main>
       </div>
@@ -142,7 +156,7 @@ export default function LaporanPage() {
       <Sidebar />
 
       <PageTransition>
-        <main className="lg:ml-64 p-6 transition-all duration-300">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-6 transition-all duration-300">
         <DashboardHeader
           title="Laporan"
           subtitle="Cetak dan unduh laporan bengkel"

@@ -201,7 +201,7 @@ export default function StokPage() {
     return (
       <div className="min-h-screen bg-background">
         <Sidebar />
-        <main className="lg:ml-64 p-4 lg:p-6 transition-all duration-300">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-4 lg:p-6 transition-all duration-300">
           <DashboardHeader title="Manajemen Stok Barang" subtitle="Kelola inventaris barang bengkel Anda" />
           <div className="flex items-center justify-center h-64">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -216,7 +216,7 @@ export default function StokPage() {
       <Sidebar />
 
       <PageTransition>
-        <main className="lg:ml-64 p-4 lg:p-6 transition-all duration-300">
+        <main className="lg:ml-[var(--sidebar-width,16rem)] p-4 lg:p-6 transition-all duration-300">
         <DashboardHeader title="Manajemen Stok Barang" subtitle="Kelola inventaris barang bengkel Anda" />
 
         <Card className="bg-card border-border">
