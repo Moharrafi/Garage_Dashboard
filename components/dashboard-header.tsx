@@ -1,8 +1,9 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { Bell, Search, User, Settings, LogOut, X, Check, Trash2 } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,11 +26,16 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { apiFetch } from "@/lib/api"
-import type { AdminProfile, NotificationType } from "@/lib/types"
+import type { AdminProfile, NotificationType, GlobalSearchItem, SearchCategory } from "@/lib/types"
 
 interface DashboardHeaderProps {
   title: string
   subtitle?: string
+  searchValue?: string
+  searchPlaceholder?: string
+  onSearchChange?: (value: string) => void
+  searchSuggestions?: GlobalSearchItem[]
+  onSelectSuggestion?: (suggestion: GlobalSearchItem) => void
 }
 
 interface NotificationState {
@@ -46,6 +52,12 @@ const typeColors: Record<NotificationType, string> = {
   success: "bg-emerald-500",
   info: "bg-blue-500",
   error: "bg-red-500",
+}
+
+const searchCategoryLabels: Record<SearchCategory, string> = {
+  stok: "Stok",
+  transaksi: "Transaksi",
+  unit: "Unit",
 }
 
 function getInitials(name: string) {
@@ -68,15 +80,73 @@ function formatRelativeTime(date: Date) {
   return `${days} hari lalu`
 }
 
-export function DashboardHeader({ title, subtitle }: DashboardHeaderProps) {
+export function DashboardHeader({
+  title,
+  subtitle,
+  searchValue: externalSearchValue,
+  searchPlaceholder = "Cari...",
+  onSearchChange,
+  searchSuggestions,
+  onSelectSuggestion,
+}: DashboardHeaderProps) {
+  const router = useRouter()
   const [notifications, setNotifications] = useState<NotificationState[]>([])
   const [notificationsLoaded, setNotificationsLoaded] = useState(false)
   const [showLogoutDialog, setShowLogoutDialog] = useState(false)
+  const [internalSearch, setInternalSearch] = useState("")
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [globalSearchData, setGlobalSearchData] = useState<GlobalSearchItem[]>([])
+  const [searchLoading, setSearchLoading] = useState(false)
   const [profile, setProfile] = useState<Pick<AdminProfile, "full_name" | "email" | "avatar_url">>({
     full_name: "Admin GTA Garage",
     email: "admin@gtagarage.com",
     avatar_url: "",
   })
+  const searchInputValue = externalSearchValue ?? internalSearch
+
+  const filteredSuggestions = useMemo(() => {
+    const pool = searchSuggestions?.length ? searchSuggestions : globalSearchData
+    if (!pool || pool.length === 0) return []
+    const query = searchInputValue.trim().toLowerCase()
+    const source = query
+      ? pool.filter((item) => {
+          const candidateStrings = [
+            item.title,
+            item.subtitle ?? "",
+            item.category ?? "",
+            ...(item.keywords ?? []),
+          ]
+          return candidateStrings.some((text) => text.toLowerCase().includes(query))
+        })
+      : pool
+    return source.slice(0, 8)
+  }, [searchSuggestions, globalSearchData, searchInputValue])
+
+  useEffect(() => {
+    if (searchSuggestions && searchSuggestions.length > 0) return
+
+    let active = true
+    async function loadSearchData() {
+      try {
+        setSearchLoading(true)
+        const data = await apiFetch<GlobalSearchItem[]>("/api/search")
+        if (active) {
+          setGlobalSearchData(data ?? [])
+        }
+      } catch (error) {
+        console.error("Gagal memuat data pencarian global:", error)
+      } finally {
+        if (active) {
+          setSearchLoading(false)
+        }
+      }
+    }
+    loadSearchData()
+
+    return () => {
+      active = false
+    }
+  }, [searchSuggestions])
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -115,6 +185,19 @@ export function DashboardHeader({ title, subtitle }: DashboardHeaderProps) {
   }, [fetchProfile, fetchNotifications])
 
   const unreadCount = notifications.filter((n) => !n.is_read).length
+
+  const handleSuggestionSelect = (suggestion: GlobalSearchItem) => {
+    if (onSearchChange) {
+      onSearchChange(suggestion.title)
+    } else {
+      setInternalSearch(suggestion.title)
+    }
+    onSelectSuggestion?.(suggestion)
+    setShowSuggestions(false)
+    if (suggestion.href) {
+      router.push(suggestion.href)
+    }
+  }
 
   const markAsRead = async (id: string) => {
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)))
@@ -173,16 +256,75 @@ export function DashboardHeader({ title, subtitle }: DashboardHeaderProps) {
   return (
     <>
       <header className="flex flex-col gap-4 mb-6 lg:mb-8">
-        <div className="flex flex-wrap items-start justify-between gap-3 sm:gap-4">
-          <div className="flex-1 min-w-[220px] pl-10 sm:pl-0">
+        <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+          <div className="flex-1 min-w-[220px] pl-12 lg:pl-0">
             <h1 className="text-xl lg:text-2xl font-bold text-foreground">{title}</h1>
             {subtitle && <p className="text-muted-foreground text-xs lg:text-sm">{subtitle}</p>}
           </div>
 
-          <div className="flex items-center justify-end flex-wrap gap-2 sm:gap-3 lg:gap-4 flex-shrink-0">
-            <div className="relative hidden md:block">
+          <div className="flex items-center justify-end flex-wrap gap-2 sm:gap-3 lg:gap-4 w-auto md:flex-1">
+            <div className="relative hidden md:flex md:flex-1 lg:flex-initial md:min-w-[220px]">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Cari..." className="pl-9 w-48 lg:w-64 bg-secondary border-border" />
+              <Input
+                placeholder={searchPlaceholder}
+                value={searchInputValue}
+                onFocus={() => setShowSuggestions(searchInputValue.trim().length > 0)}
+                onBlur={() => {
+                  setTimeout(() => setShowSuggestions(false), 100)
+                }}
+                onChange={(e) => {
+                  const value = e.target.value
+                  if (onSearchChange) {
+                    onSearchChange(value)
+                  } else {
+                    setInternalSearch(value)
+                  }
+                  setShowSuggestions(value.trim().length > 0)
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && filteredSuggestions[0]) {
+                    e.preventDefault()
+                    handleSuggestionSelect(filteredSuggestions[0])
+                  }
+                }}
+                className="pl-9 w-full lg:w-64 bg-secondary border-border"
+              />
+              {showSuggestions && searchInputValue.trim().length > 0 && (
+                <div className="absolute top-full mt-2 w-full rounded-xl border border-border bg-card shadow-lg z-10">
+                  <p className="text-[11px] px-3 py-1 text-muted-foreground uppercase tracking-wide border-b border-border/60">
+                    Rekomendasi
+                  </p>
+                  <div className="max-h-72 overflow-y-auto py-1">
+                    {searchLoading ? (
+                      <div className="px-3 py-4 text-sm text-muted-foreground text-center">Memuat data...</div>
+                    ) : filteredSuggestions.length > 0 ? (
+                      filteredSuggestions.map((suggestion) => (
+                        <button
+                          key={suggestion.id}
+                          type="button"
+                          onMouseDown={(e) => {
+                            e.preventDefault()
+                            handleSuggestionSelect(suggestion)
+                          }}
+                          className="w-full flex items-start justify-between gap-3 px-3 py-2 hover:bg-muted transition-colors"
+                        >
+                          <div className="text-left">
+                            <p className="text-sm font-medium text-card-foreground">{suggestion.title}</p>
+                            {suggestion.subtitle && (
+                              <p className="text-xs text-muted-foreground mt-0.5">{suggestion.subtitle}</p>
+                            )}
+                          </div>
+                          <span className="text-[11px] font-medium text-muted-foreground px-2 py-0.5 rounded-full bg-muted/80">
+                            {searchCategoryLabels[suggestion.category] ?? suggestion.category}
+                          </span>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="px-3 py-4 text-sm text-muted-foreground text-center">data tidak ditemukan</div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             <ThemeToggle />

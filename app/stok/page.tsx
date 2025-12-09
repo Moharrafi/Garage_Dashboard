@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { useSearchParams } from "next/navigation"
 import { Sidebar } from "@/components/sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -40,7 +41,9 @@ const categories = ["Semua", "Oli", "Sparepart", "Ban", "Aki", "Cairan", "Bubuk"
 export default function StokPage() {
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(true)
-  const [searchTerm, setSearchTerm] = useState("")
+  const searchParams = useSearchParams()
+  const initialSearch = searchParams.get("q") ?? ""
+  const [searchTerm, setSearchTerm] = useState(initialSearch)
   const [selectedCategory, setSelectedCategory] = useState("Semua")
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [isEditOpen, setIsEditOpen] = useState(false)
@@ -82,6 +85,10 @@ export default function StokPage() {
   useEffect(() => {
     fetchItems()
   }, [fetchItems])
+
+  useEffect(() => {
+    setSearchTerm(initialSearch)
+  }, [initialSearch])
 
   const filteredItems = items.filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -240,22 +247,22 @@ export default function StokPage() {
                       ))}
                   </SelectContent>
                 </Select>
-                <div className="flex border border-border rounded-lg overflow-hidden">
+                <div className="flex border border-border rounded-lg overflow-hidden w-full sm:w-auto">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className={`rounded-none h-9 w-9 ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
+                    className={`rounded-none h-9 flex-1 sm:flex-none ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
                     onClick={() => setViewMode("table")}
                   >
-                    <List className="h-4 w-4" />
+                    <List className="h-4 w-4 mx-auto" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className={`rounded-none h-9 w-9 ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
+                    className={`rounded-none h-9 flex-1 sm:flex-none ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
                     onClick={() => setViewMode("grid")}
                   >
-                    <LayoutGrid className="h-4 w-4" />
+                    <LayoutGrid className="h-4 w-4 mx-auto" />
                   </Button>
                 </div>
                 <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
@@ -387,73 +394,73 @@ export default function StokPage() {
           <CardContent>
             {viewMode === "table" ? (
               <div className="overflow-x-auto">
-                <Table className="min-w-[760px] table-auto md:table-fixed border-separate border-spacing-0">
-                  <TableHeader>
-                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
-                      <TableHead>Nama Barang</TableHead>
-                      <TableHead>Kategori</TableHead>
-                      <TableHead className="text-right">Stok</TableHead>
-                      <TableHead className="text-right">Min. Stok</TableHead>
-                      <TableHead className="text-right">Harga</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead className="text-right">Aksi</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="divide-y divide-border/40">
-                    {filteredItems.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
-                          {searchTerm || selectedCategory !== "Semua"
-                            ? "Tidak ada barang yang sesuai filter"
-                            : "Belum ada data barang"}
-                        </TableCell>
+                <div className="min-w-[760px] rounded-xl border border-border/80 overflow-hidden bg-card">
+                  <Table className="w-full table-auto lg:table-fixed border-collapse">
+                    <TableHeader>
+                      <TableRow className="bg-muted/60 border-b border-border/40 [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th]:text-center">
+                        <TableHead>Nama Barang</TableHead>
+                        <TableHead>Kategori</TableHead>
+                        <TableHead>Stok</TableHead>
+                        <TableHead>Min. Stok</TableHead>
+                        <TableHead>Harga</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Aksi</TableHead>
                       </TableRow>
-                    ) : (
-                      filteredItems.map((item) => (
-                        <TableRow key={item.id} className="border-border">
-                          <TableCell className="font-medium text-card-foreground">{item.name}</TableCell>
-                          <TableCell>
-                            <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
-                              {item.category}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-right text-card-foreground">
-                            {item.stock} {item.unit}
-                          </TableCell>
-                          <TableCell className="text-right text-muted-foreground">{item.min_stock}</TableCell>
-                          <TableCell className="text-right text-card-foreground">
-                            {formatCurrency(item.price)}
-                          </TableCell>
-                          <TableCell>
-                            {item.stock <= item.min_stock ? (
-                              <Badge className="bg-destructive/20 text-destructive border-destructive/30">
-                                <AlertTriangle className="h-3 w-3 mr-1" />
-                                Stok Menipis
-                              </Badge>
-                            ) : (
-                              <Badge className="bg-success/20 text-success border-success/30">Tersedia</Badge>
-                            )}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button variant="ghost" size="icon" onClick={() => openEditModal(item)}>
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-destructive hover:text-destructive"
-                                onClick={() => openDeleteConfirm(item)}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredItems.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                            {searchTerm || selectedCategory !== "Semua"
+                              ? "Tidak ada barang yang sesuai filter"
+                              : "Belum ada data barang"}
                           </TableCell>
                         </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
+                      ) : (
+                        filteredItems.map((item) => (
+                          <TableRow key={item.id} className="border-b border-border/50 last:border-b-0 [&>td]:text-center">
+                            <TableCell className="font-medium text-card-foreground">{item.name}</TableCell>
+                            <TableCell>
+                              <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
+                                {item.category}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-card-foreground">
+                              {item.stock} {item.unit}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">{item.min_stock}</TableCell>
+                            <TableCell className="text-card-foreground">{formatCurrency(item.price)}</TableCell>
+                            <TableCell>
+                              {item.stock <= item.min_stock ? (
+                                <Badge className="bg-destructive/20 text-destructive border-destructive/30">
+                                  <AlertTriangle className="h-3 w-3 mr-1" />
+                                  Stok Menipis
+                                </Badge>
+                              ) : (
+                                <Badge className="bg-success/20 text-success border-success/30">Tersedia</Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex justify-center gap-2">
+                                <Button variant="ghost" size="icon" onClick={() => openEditModal(item)}>
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-destructive hover:text-destructive"
+                                  onClick={() => openDeleteConfirm(item)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

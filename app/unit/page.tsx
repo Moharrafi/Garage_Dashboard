@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { useSearchParams } from "next/navigation"
 import { Sidebar } from "@/components/sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -118,7 +119,9 @@ export default function UnitPage() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const [isUpdateStatusOpen, setIsUpdateStatusOpen] = useState(false)
   const [selectedUnit, setSelectedUnit] = useState<Unit | null>(null)
-  const [searchTerm, setSearchTerm] = useState("")
+  const searchParams = useSearchParams()
+  const initialSearch = searchParams.get("q") ?? ""
+  const [searchTerm, setSearchTerm] = useState(initialSearch)
   const [statusFilter, setStatusFilter] = useState<string>("active")
   const [newStatus, setNewStatus] = useState<StatusType>("proses")
   const [finalCost, setFinalCost] = useState("")
@@ -151,6 +154,10 @@ export default function UnitPage() {
   useEffect(() => {
     fetchUnits()
   }, [fetchUnits])
+
+  useEffect(() => {
+    setSearchTerm(initialSearch)
+  }, [initialSearch])
 
   const resetForm = () => {
     setFormData({
@@ -318,19 +325,28 @@ export default function UnitPage() {
     setIsUpdateStatusOpen(true)
   }
 
+  const normalizedSearch = searchTerm.trim().toLowerCase()
+  const isSearchActive = normalizedSearch.length > 0
+
   const filteredUnits = units.filter((unit) => {
     const matchesSearch =
-      unit.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      unit.owner_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      unit.vehicle_type.toLowerCase().includes(searchTerm.toLowerCase())
+      !isSearchActive ||
+      unit.brand.toLowerCase().includes(normalizedSearch) ||
+      unit.owner_name.toLowerCase().includes(normalizedSearch) ||
+      unit.vehicle_type.toLowerCase().includes(normalizedSearch)
 
-    if (statusFilter === "active") {
-      return matchesSearch && (unit.status === "check-in" || unit.status === "proses")
-    } else if (statusFilter === "all") {
-      return matchesSearch
-    } else {
-      return matchesSearch && unit.status === statusFilter
+    let statusMatches = true
+    if (!isSearchActive) {
+      if (statusFilter === "active") {
+        statusMatches = unit.status === "check-in" || unit.status === "proses"
+      } else if (statusFilter === "all") {
+        statusMatches = true
+      } else {
+        statusMatches = unit.status === statusFilter
+      }
     }
+
+    return matchesSearch && statusMatches
   })
 
   const statusCounts = {
@@ -421,304 +437,315 @@ export default function UnitPage() {
         {/* Unit List */}
         <Card className="bg-card border-border">
           <CardHeader>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <CardTitle className="text-card-foreground">Daftar Unit</CardTitle>
-              <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Cari unit..."
-                    className="pl-9 w-full sm:w-64 bg-secondary border-border"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <CardTitle className="text-card-foreground whitespace-nowrap">Daftar Unit</CardTitle>
+              <div className="flex flex-col gap-3 w-full lg:flex-row lg:items-center lg:gap-4 lg:justify-end">
+                <div className="flex flex-col lg:flex-row gap-3 w-full lg:w-auto">
+                  <div className="relative flex-1 min-w-[220px]">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Cari unit..."
+                      className="pl-9 w-full bg-secondary border-border"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="bg-secondary border-border w-full md:w-48">
+                      <SelectValue placeholder="Pilih Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="active">Unit Aktif</SelectItem>
+                      <SelectItem value="all">Semua Status</SelectItem>
+                      <SelectItem value="check-in">Check-in</SelectItem>
+                      <SelectItem value="proses">Proses</SelectItem>
+                      <SelectItem value="selesai">Selesai</SelectItem>
+                      <SelectItem value="check-out">Check-out</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-40 bg-secondary border-border">
-                    <SelectValue placeholder="Pilih Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Unit Aktif</SelectItem>
-                    <SelectItem value="all">Semua Status</SelectItem>
-                    <SelectItem value="check-in">Check-in</SelectItem>
-                    <SelectItem value="proses">Proses</SelectItem>
-                    <SelectItem value="selesai">Selesai</SelectItem>
-                    <SelectItem value="check-out">Check-out</SelectItem>
-                  </SelectContent>
-                </Select>
-                <div className="flex border border-border rounded-lg overflow-hidden">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className={`rounded-none h-9 w-9 ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
-                    onClick={() => setViewMode("table")}
-                  >
-                    <List className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className={`rounded-none h-9 w-9 ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
-                    onClick={() => setViewMode("grid")}
-                  >
-                    <LayoutGrid className="h-4 w-4" />
-                  </Button>
-                </div>
-                <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                  <DialogTrigger asChild>
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Check-in Unit Baru
+                <div className="flex flex-col lg:flex-row gap-3 w-full lg:w-auto lg:justify-end lg:items-center">
+                  <div className="flex border border-border rounded-lg overflow-hidden w-full md:w-auto">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className={`rounded-none h-9 flex-1 md:flex-none ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
+                      onClick={() => setViewMode("table")}
+                      aria-label="Tampilan tabel"
+                    >
+                      <List className="h-4 w-4 mx-auto" />
                     </Button>
-                  </DialogTrigger>
-                  <DialogContent className="bg-card border-border max-w-lg">
-                    <DialogHeader>
-                      <DialogTitle className="text-card-foreground">Check-in Unit Baru</DialogTitle>
-                      <DialogDescription>Daftarkan kendaraan baru untuk servis.</DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="grid gap-2">
-                          <Label className="text-sm font-medium">Jenis Kendaraan</Label>
-                          <Select
-                            value={formData.vehicleCategory}
-                            onValueChange={(value) => setFormData({ ...formData, vehicleCategory: value })}
-                          >
-                            <SelectTrigger className="bg-background border-2 border-border/60 focus:border-primary">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="matic">Matic</SelectItem>
-                              <SelectItem value="sport">Sport</SelectItem>
-                              <SelectItem value="bebek">Bebek</SelectItem>
-                              <SelectItem value="trail">Trail</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="grid gap-2">
-                          <Label className="text-sm font-medium">Merek & Tipe</Label>
-                          <Input
-                            placeholder="Honda Beat, dll"
-                            value={formData.brand}
-                            onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-                            className="bg-background border-2 border-border/60 focus:border-primary"
-                          />
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="grid gap-2">
-                          <Label className="text-sm font-medium">Nama Pemilik</Label>
-                          <Input
-                            value={formData.ownerName}
-                            onChange={(e) => setFormData({ ...formData, ownerName: e.target.value })}
-                            className="bg-background border-2 border-border/60 focus:border-primary"
-                          />
-                        </div>
-                        <div className="grid gap-2">
-                          <Label className="text-sm font-medium">No. Telepon</Label>
-                          <Input
-                            placeholder="08xxxxxxxxxx"
-                            value={formData.phone}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="bg-background border-2 border-border/60 focus:border-primary"
-                          />
-                        </div>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label className="text-sm font-medium">Jenis Layanan</Label>
-                        <div className="grid grid-cols-2 gap-2">
-                          {(Object.keys(serviceConfig) as ServiceType[]).map((type) => {
-                            const service = serviceConfig[type]
-                            const Icon = service.icon
-                            const isSelected = formData.serviceType === type
-                            return (
-                              <button
-                                key={type}
-                                type="button"
-                                onClick={() => setFormData({ ...formData, serviceType: type })}
-                                className={`
-                                  flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium
-                                  transition-all duration-200 border-2
-                                  ${
-                                    isSelected
-                                      ? "bg-primary text-primary-foreground border-primary"
-                                      : "bg-background border-border/60 hover:border-primary/50 text-muted-foreground hover:text-foreground"
-                                  }
-                                `}
-                              >
-                                <Icon className="h-4 w-4" />
-                                {service.label.split(" ")[0]}
-                              </button>
-                            )
-                          })}
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="grid gap-2">
-                          <Label className="text-sm font-medium">Tanggal Check-in</Label>
-                          <Input
-                            type="date"
-                            value={formData.checkInDate}
-                            onChange={(e) => setFormData({ ...formData, checkInDate: e.target.value })}
-                            className="bg-background border-2 border-border/60 focus:border-primary"
-                          />
-                        </div>
-                        <div className="grid gap-2">
-                          <Label className="text-sm font-medium">Estimasi Biaya</Label>
-                          <Input
-                            type="number"
-                            placeholder="0"
-                            value={formData.estimatedCost}
-                            onChange={(e) => setFormData({ ...formData, estimatedCost: e.target.value })}
-                            className="bg-background border-2 border-border/60 focus:border-primary"
-                          />
-                        </div>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label className="text-sm font-medium">Catatan</Label>
-                        <Textarea
-                          placeholder="Detail pekerjaan yang akan dilakukan..."
-                          value={formData.problem}
-                          onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
-                          className="bg-background border-2 border-border/60 focus:border-primary min-h-[80px]"
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Button
-                        variant="outline"
-                        onClick={() => {
-                          resetForm()
-                          setIsAddOpen(false)
-                        }}
-                        disabled={saving}
-                      >
-                        Batal
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className={`rounded-none h-9 flex-1 md:flex-none ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
+                      onClick={() => setViewMode("grid")}
+                      aria-label="Tampilan grid"
+                    >
+                      <LayoutGrid className="h-4 w-4 mx-auto" />
+                    </Button>
+                  </div>
+                  <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                    <DialogTrigger asChild>
+                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90 w-full md:w-auto">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Check-in Unit Baru
                       </Button>
-                      <Button onClick={handleAddUnit} className="bg-primary text-primary-foreground" disabled={saving}>
-                        {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                        Check-in
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                    </DialogTrigger>
+                    <DialogContent className="bg-card border-border max-w-lg">
+                      <DialogHeader>
+                        <DialogTitle className="text-card-foreground">Check-in Unit Baru</DialogTitle>
+                        <DialogDescription>Daftarkan kendaraan baru untuk servis.</DialogDescription>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="grid gap-2">
+                            <Label className="text-sm font-medium">Jenis Kendaraan</Label>
+                            <Select
+                              value={formData.vehicleCategory}
+                              onValueChange={(value) => setFormData({ ...formData, vehicleCategory: value })}
+                            >
+                              <SelectTrigger className="bg-background border-2 border-border/60 focus:border-primary">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="matic">Matic</SelectItem>
+                                <SelectItem value="sport">Sport</SelectItem>
+                                <SelectItem value="bebek">Bebek</SelectItem>
+                                <SelectItem value="trail">Trail</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="grid gap-2">
+                            <Label className="text-sm font-medium">Merek & Tipe</Label>
+                            <Input
+                              placeholder="Honda Beat, dll"
+                              value={formData.brand}
+                              onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                              className="bg-background border-2 border-border/60 focus:border-primary"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="grid gap-2">
+                            <Label className="text-sm font-medium">Nama Pemilik</Label>
+                            <Input
+                              value={formData.ownerName}
+                              onChange={(e) => setFormData({ ...formData, ownerName: e.target.value })}
+                              className="bg-background border-2 border-border/60 focus:border-primary"
+                            />
+                          </div>
+                          <div className="grid gap-2">
+                            <Label className="text-sm font-medium">No. Telepon</Label>
+                            <Input
+                              placeholder="08xxxxxxxxxx"
+                              value={formData.phone}
+                              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                              className="bg-background border-2 border-border/60 focus:border-primary"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid gap-2">
+                          <Label className="text-sm font-medium">Jenis Layanan</Label>
+                          <div className="grid grid-cols-2 gap-2">
+                            {(Object.keys(serviceConfig) as ServiceType[]).map((type) => {
+                              const service = serviceConfig[type]
+                              const Icon = service.icon
+                              const isSelected = formData.serviceType === type
+                              return (
+                                <button
+                                  key={type}
+                                  type="button"
+                                  onClick={() => setFormData({ ...formData, serviceType: type })}
+                                  className={`
+                                    flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium
+                                    transition-all duration-200 border-2
+                                    ${
+                                      isSelected
+                                        ? "bg-primary text-primary-foreground border-primary"
+                                        : "bg-background border-border/60 hover:border-primary/50 text-muted-foreground hover:text-foreground"
+                                    }
+                                  `}
+                                >
+                                  <Icon className="h-4 w-4" />
+                                  {service.label.split(" ")[0]}
+                                </button>
+                              )
+                            })}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="grid gap-2">
+                            <Label className="text-sm font-medium">Tanggal Check-in</Label>
+                            <Input
+                              type="date"
+                              value={formData.checkInDate}
+                              onChange={(e) => setFormData({ ...formData, checkInDate: e.target.value })}
+                              className="bg-background border-2 border-border/60 focus:border-primary"
+                            />
+                          </div>
+                          <div className="grid gap-2">
+                            <Label className="text-sm font-medium">Estimasi Biaya</Label>
+                            <Input
+                              type="number"
+                              placeholder="0"
+                              value={formData.estimatedCost}
+                              onChange={(e) => setFormData({ ...formData, estimatedCost: e.target.value })}
+                              className="bg-background border-2 border-border/60 focus:border-primary"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid gap-2">
+                          <Label className="text-sm font-medium">Catatan</Label>
+                          <Textarea
+                            placeholder="Detail pekerjaan yang akan dilakukan..."
+                            value={formData.problem}
+                            onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
+                            className="bg-background border-2 border-border/60 focus:border-primary min-h-[80px]"
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            resetForm()
+                            setIsAddOpen(false)
+                          }}
+                          disabled={saving}
+                        >
+                          Batal
+                        </Button>
+                        <Button onClick={handleAddUnit} className="bg-primary text-primary-foreground" disabled={saving}>
+                          {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                          Check-in
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
             </div>
           </CardHeader>
           <CardContent>
             {viewMode === "table" ? (
               <div className="overflow-x-auto">
-                <Table className="min-w-[900px] table-auto md:table-fixed border-separate border-spacing-0">
-                  <TableHeader>
-                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
-                      <TableHead>Kendaraan</TableHead>
-                      <TableHead>Pemilik</TableHead>
-                      <TableHead>Layanan</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Check-in</TableHead>
-                      <TableHead>Biaya</TableHead>
-                      <TableHead className="w-[220px]">Catatan</TableHead>
-                      <TableHead className="text-center w-[150px]">Aksi</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="divide-y divide-border/40">
-                    {filteredUnits.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
-                          {searchTerm || statusFilter !== "active"
-                            ? "Tidak ada unit yang sesuai filter"
-                            : "Belum ada data unit"}
-                        </TableCell>
+                <div className="min-w-[900px] rounded-xl border border-border/80 overflow-hidden bg-card">
+                  <Table className="w-full table-auto lg:table-fixed border-collapse">
+                    <TableHeader>
+                      <TableRow className="bg-muted/60 border-b border-border/40 [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th]:text-left md:[&>th]:text-center">
+                        <TableHead>Kendaraan</TableHead>
+                        <TableHead>Pemilik</TableHead>
+                        <TableHead>Layanan</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Check-in</TableHead>
+                        <TableHead>Biaya</TableHead>
+                        <TableHead className="w-[220px]">Catatan</TableHead>
+                        <TableHead className="w-[150px]">Aksi</TableHead>
                       </TableRow>
-                    ) : (
-                      filteredUnits.map((unit) => {
-                        const service = serviceConfig[unit.service_type]
-                        const status = statusConfig[unit.status]
-                        const ServiceIcon = service.icon
-                        const StatusIcon = status.icon
-                        const normalizedStatus = unit.status.trim().toLowerCase()
-                        const canEdit = normalizedStatus === "check-in" || normalizedStatus === "proses"
-                        const canUpdateStatus = normalizedStatus !== "check-out"
+                    </TableHeader>
+                    <TableBody>
+                      {filteredUnits.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
+                            {searchTerm || statusFilter !== "active"
+                              ? "Tidak ada unit yang sesuai filter"
+                              : "Belum ada data unit"}
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        filteredUnits.map((unit) => {
+                          const service = serviceConfig[unit.service_type]
+                          const status = statusConfig[unit.status]
+                          const ServiceIcon = service.icon
+                          const StatusIcon = status.icon
+                          const normalizedStatus = unit.status.trim().toLowerCase()
+                          const canEdit = normalizedStatus === "check-in" || normalizedStatus === "proses"
+                          const canUpdateStatus = normalizedStatus !== "check-out"
 
-                        return (
-                          <TableRow key={unit.id} className="border-border">
-                            <TableCell>
-                              <div>
-                                <p className="font-medium text-card-foreground">{unit.brand}</p>
-                                <p className="text-xs text-muted-foreground capitalize">{unit.vehicle_type}</p>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <div>
-                                <p className="font-medium text-card-foreground">{unit.owner_name}</p>
-                                <p className="text-xs text-muted-foreground">{unit.phone}</p>
-                              </div>
-                            </TableCell>
-                            <TableCell>
-                              <Badge className={`${service.color} gap-1`}>
-                                <ServiceIcon className="h-3 w-3" />
-                                {service.label}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <Badge className={`${status.color} gap-1`}>
-                                <StatusIcon className="h-3 w-3" />
-                                {status.label}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-muted-foreground">{formatDate(unit.check_in_date)}</TableCell>
-                            <TableCell>
-                              <Badge
-                                className={
-                                  unit.final_cost
-                                    ? "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/30"
-                                    : "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/30"
-                                }
-                              >
-                                {formatCurrency(unit.final_cost || unit.estimated_cost)}
-                              </Badge>
-                            </TableCell>
-                            <TableCell className="text-sm text-card-foreground text-wrap break-words w-[220px]">
-                              {unit.notes || "-"}
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex justify-end gap-1 items-center">
-                                <Button variant="ghost" size="icon" onClick={() => openViewDialog(unit)}>
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                                {canEdit && (
-                                  <>
-                                    <Button variant="ghost" size="icon" onClick={() => openEditDialog(unit)}>
-                                      <Edit className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                      variant="ghost"
-                                      size="icon"
-                                      className="text-destructive hover:text-destructive"
-                                      onClick={() => openDeleteDialog(unit)}
-                                    >
-                                      <Trash2 className="h-4 w-4" />
-                                    </Button>
-                                  </>
-                                )}
-                                {canUpdateStatus && (
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="ml-2"
-                                    onClick={() => openUpdateStatusDialog(unit)}
-                                  >
-                                    Update
+                          return (
+                            <TableRow
+                              key={unit.id}
+                              className="border-b border-border/50 last:border-b-0 [&>td]:px-4 [&>td]:py-4 [&>td]:text-left md:[&>td]:text-center"
+                            >
+                              <TableCell className="text-left">
+                                <div>
+                                  <p className="font-medium text-card-foreground">{unit.brand}</p>
+                                  <p className="text-xs text-muted-foreground capitalize">{unit.vehicle_type}</p>
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-left">
+                                <div>
+                                  <p className="font-medium text-card-foreground">{unit.owner_name}</p>
+                                  <p className="text-xs text-muted-foreground">{unit.phone}</p>
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <Badge className={`${service.color} gap-1`}>
+                                  <ServiceIcon className="h-3 w-3" />
+                                  {service.label}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                <Badge className={`${status.color} gap-1`}>
+                                  <StatusIcon className="h-3 w-3" />
+                                  {status.label}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-muted-foreground">{formatDate(unit.check_in_date)}</TableCell>
+                              <TableCell className="text-center">
+                                <Badge
+                                  className={
+                                    unit.final_cost
+                                      ? "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/30"
+                                      : "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/30"
+                                  }
+                                >
+                                  {formatCurrency(unit.final_cost || unit.estimated_cost)}
+                                </Badge>
+                              </TableCell>
+                              <TableCell className="text-sm text-card-foreground text-wrap break-words w-[220px]">
+                                {unit.notes || "-"}
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex justify-start md:justify-center gap-1 items-center">
+                                  <Button variant="ghost" size="icon" onClick={() => openViewDialog(unit)}>
+                                    <Eye className="h-4 w-4" />
                                   </Button>
-                                )}
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        )
-                      })
-                    )}
-                  </TableBody>
-                </Table>
+                                  {canEdit && (
+                                    <>
+                                      <Button variant="ghost" size="icon" onClick={() => openEditDialog(unit)}>
+                                        <Edit className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="text-destructive hover:text-destructive"
+                                        onClick={() => openDeleteDialog(unit)}
+                                      >
+                                        <Trash2 className="h-4 w-4" />
+                                      </Button>
+                                    </>
+                                  )}
+                                  {canUpdateStatus && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="ml-2"
+                                      onClick={() => openUpdateStatusDialog(unit)}
+                                    >
+                                      Update
+                                    </Button>
+                                  )}
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          )
+                        })
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

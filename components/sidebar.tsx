@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   Wrench,
   Menu,
+  X,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -54,10 +55,11 @@ export function Sidebar() {
         variant="ghost"
         size="icon"
         className={cn(
-          "fixed top-4 left-2 z-50 lg:hidden transition-opacity duration-200 border border-border rounded-xl bg-background/90 shadow-sm",
+          "fixed top-3 left-3 sm:top-4 sm:left-4 z-50 lg:hidden transition-opacity duration-200 border border-border rounded-xl bg-background/90 shadow-sm",
           mobileOpen ? "opacity-0 pointer-events-none" : "opacity-100",
         )}
         onClick={() => setMobileOpen(true)}
+        aria-label="Buka menu"
       >
         <Menu className="h-5 w-5" />
       </Button>
@@ -80,19 +82,27 @@ export function Sidebar() {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div
-            className={cn(
-              "flex items-center h-16 px-4 border-b border-sidebar-border",
-              collapsed ? "justify-center" : "gap-3",
-            )}
-          >
+          <div className={cn("flex items-center h-16 px-4 border-b border-sidebar-border", collapsed ? "justify-center" : "gap-3")}>
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <Wrench className="h-5 w-5 text-primary-foreground" />
             </div>
             {!collapsed && (
-              <div>
-                <h1 className="font-bold text-sidebar-foreground">GTA Garage</h1>
-                <p className="text-xs text-muted-foreground">Workshop Management</p>
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h1 className="font-bold text-sidebar-foreground">GTA Garage</h1>
+                    <p className="text-xs text-muted-foreground">Workshop Management</p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="lg:hidden h-8 w-8 rounded-full text-muted-foreground"
+                    onClick={() => setMobileOpen(false)}
+                    aria-label="Tutup menu"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             )}
           </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { useSearchParams } from "next/navigation"
 import { Sidebar } from "@/components/sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -34,7 +35,9 @@ export default function TransaksiPage() {
   const [saving, setSaving] = useState(false)
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [transactionType, setTransactionType] = useState<"masuk" | "keluar">("masuk")
-  const [searchTerm, setSearchTerm] = useState("")
+  const searchParams = useSearchParams()
+  const initialSearch = searchParams.get("q") ?? ""
+  const [searchTerm, setSearchTerm] = useState(initialSearch)
   const [filterType, setFilterType] = useState<"semua" | "masuk" | "keluar">("semua")
   const [viewMode, setViewMode] = useState<"table" | "grid">("table")
   const { showToast } = useToast()
@@ -65,6 +68,10 @@ export default function TransaksiPage() {
   useEffect(() => {
     fetchData()
   }, [fetchData])
+
+  useEffect(() => {
+    setSearchTerm(initialSearch)
+  }, [initialSearch])
 
   const filteredTransactions = transactions.filter((tx) => {
     const matchesSearch =
@@ -196,29 +203,48 @@ export default function TransaksiPage() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
-                <Tabs value={filterType} onValueChange={(v) => setFilterType(v as typeof filterType)}>
-                  <TabsList className="bg-secondary">
-                    <TabsTrigger value="semua">Semua</TabsTrigger>
-                    <TabsTrigger value="masuk">Masuk</TabsTrigger>
-                    <TabsTrigger value="keluar">Keluar</TabsTrigger>
+                <Tabs
+                  value={filterType}
+                  onValueChange={(v) => setFilterType(v as typeof filterType)}
+                  className="w-full sm:w-auto"
+                >
+                  <TabsList className="bg-secondary w-full grid grid-cols-3 rounded-full p-1 gap-1 overflow-hidden">
+                    <TabsTrigger
+                      value="semua"
+                      className="px-4 py-0.5 text-sm rounded-full transition-all duration-200 ease-out data-[state=active]:bg-background data-[state=active]:text-foreground"
+                    >
+                      Semua
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="masuk"
+                      className="px-4 py-0.5 text-sm rounded-full transition-all duration-200 ease-out data-[state=active]:bg-background data-[state=active]:text-foreground"
+                    >
+                      Masuk
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="keluar"
+                      className="px-4 py-0.5 text-sm rounded-full transition-all duration-200 ease-out data-[state=active]:bg-background data-[state=active]:text-foreground"
+                    >
+                      Keluar
+                    </TabsTrigger>
                   </TabsList>
                 </Tabs>
-                <div className="flex border border-border rounded-lg overflow-hidden">
+                <div className="flex border border-border rounded-lg overflow-hidden w-full sm:w-auto">
                   <Button
                     variant="ghost"
                     size="icon"
-                    className={`rounded-none h-9 w-9 ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
+                    className={`rounded-none h-9 flex-1 sm:flex-none ${viewMode === "table" ? "bg-primary text-primary-foreground" : ""}`}
                     onClick={() => setViewMode("table")}
                   >
-                    <List className="h-4 w-4" />
+                    <List className="h-4 w-4 mx-auto" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className={`rounded-none h-9 w-9 ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
+                    className={`rounded-none h-9 flex-1 sm:flex-none ${viewMode === "grid" ? "bg-primary text-primary-foreground" : ""}`}
                     onClick={() => setViewMode("grid")}
                   >
-                    <LayoutGrid className="h-4 w-4" />
+                    <LayoutGrid className="h-4 w-4 mx-auto" />
                   </Button>
                 </div>
                 <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
@@ -321,65 +347,67 @@ export default function TransaksiPage() {
           <CardContent>
             {viewMode === "table" ? (
               <div className="overflow-x-auto">
-                <Table className="min-w-[780px] table-auto md:table-fixed border-separate border-spacing-0">
-                  <TableHeader>
-                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
-                      <TableHead>Tipe</TableHead>
-                      <TableHead>Nama Barang</TableHead>
-                      <TableHead className="text-right">Jumlah</TableHead>
-                      <TableHead>Tanggal</TableHead>
-                      <TableHead>Keterangan</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredTransactions.length === 0 ? (
-                      <TableRow>
-                        <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
-                          {searchTerm || filterType !== "semua"
-                            ? "Tidak ada transaksi yang sesuai filter"
-                            : "Belum ada data transaksi"}
-                        </TableCell>
+                <div className="min-w-[780px] rounded-xl border border-border/80 overflow-hidden bg-card">
+                  <Table className="w-full table-auto md:table-fixed border-collapse">
+                    <TableHeader>
+                      <TableRow className="bg-muted/60 border-b border-border/40 [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th]:text-center">
+                        <TableHead>Tipe</TableHead>
+                        <TableHead>Nama Barang</TableHead>
+                        <TableHead>Jumlah</TableHead>
+                        <TableHead>Tanggal</TableHead>
+                        <TableHead>Keterangan</TableHead>
                       </TableRow>
-                    ) : (
-                      filteredTransactions.map((tx, index) => (
-                        <TableRow
-                          key={tx.id}
-                          className="border-b border-border/40 transition-all duration-300 ease-out hover:bg-muted/30 hover:translate-x-0.5 last:border-b-0"
-                          style={{ transitionDelay: `${index * 25}ms` }}
-                        >
-                          <TableCell>
-                            <Badge
-                              className={
-                                tx.type === "masuk"
-                                  ? "bg-success/20 text-success border-success/30"
-                                  : "bg-destructive/20 text-destructive border-destructive/30"
-                              }
-                            >
-                              {tx.type === "masuk" ? (
-                                <>
-                                  <ArrowDownRight className="h-3 w-3 mr-1" /> Masuk
-                                </>
-                              ) : (
-                                <>
-                                  <ArrowUpRight className="h-3 w-3 mr-1" /> Keluar
-                                </>
-                              )}
-                            </Badge>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredTransactions.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                            {searchTerm || filterType !== "semua"
+                              ? "Tidak ada transaksi yang sesuai filter"
+                              : "Belum ada data transaksi"}
                           </TableCell>
-                          <TableCell className="font-medium text-card-foreground">{tx.item_name}</TableCell>
-                          <TableCell
-                            className={`text-right font-medium ${tx.type === "masuk" ? "text-success" : "text-destructive"}`}
-                          >
-                            {tx.type === "masuk" ? "+" : "-"}
-                            {tx.quantity}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">{formatDate(tx.date)}</TableCell>
-                          <TableCell className="text-muted-foreground max-w-xs truncate">{tx.note || "-"}</TableCell>
                         </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
+                      ) : (
+                        filteredTransactions.map((tx, index) => (
+                          <TableRow
+                            key={tx.id}
+                            className="border-b border-border/50 last:border-b-0 transition-all duration-300 ease-out hover:bg-muted/30 hover:translate-x-0.5 [&>td]:text-center"
+                            style={{ transitionDelay: `${index * 25}ms` }}
+                          >
+                            <TableCell>
+                              <Badge
+                                className={
+                                  tx.type === "masuk"
+                                    ? "bg-success/20 text-success border-success/30"
+                                    : "bg-destructive/20 text-destructive border-destructive/30"
+                                }
+                              >
+                                {tx.type === "masuk" ? (
+                                  <>
+                                    <ArrowDownRight className="h-3 w-3 mr-1" /> Masuk
+                                  </>
+                                ) : (
+                                  <>
+                                    <ArrowUpRight className="h-3 w-3 mr-1" /> Keluar
+                                  </>
+                                )}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="font-medium text-card-foreground">{tx.item_name}</TableCell>
+                            <TableCell
+                              className={`font-medium ${tx.type === "masuk" ? "text-success" : "text-destructive"}`}
+                            >
+                              {tx.type === "masuk" ? "+" : "-"}
+                              {tx.quantity}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">{formatDate(tx.date)}</TableCell>
+                            <TableCell className="text-muted-foreground max-w-xs truncate">{tx.note || "-"}</TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">

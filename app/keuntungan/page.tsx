@@ -27,6 +27,7 @@ import {
   Pie,
   Cell,
   Legend,
+  ReferenceLine,
 } from "recharts"
 
 const monthOptions = [
@@ -272,6 +273,18 @@ export default function KeuntunganPage() {
       negativeProfit: monthProfit < 0 ? monthProfit : null,
     }
   })
+  const animatedMonthlyData = isLoading ? [] : monthlyData
+
+  const profitValues = monthlyData.map((data) => data.keuntungan)
+  const minProfitValue = Math.min(0, ...profitValues)
+  const maxProfitValue = Math.max(0, ...profitValues)
+  const profitPadding = Math.max(Math.abs(minProfitValue), Math.abs(maxProfitValue)) * 0.15 || 1
+  const profitYAxisDomain: [number, number] = [minProfitValue - profitPadding, maxProfitValue + profitPadding]
+  const shouldAnimateChart = !isLoading && monthlyData.length > 0
+  const animationConfig = shouldAnimateChart
+    ? { isAnimationActive: true, animationBegin: 300, animationDuration: 1200, animationEasing: "ease" as const }
+    : { isAnimationActive: false }
+
   const defaultProfitColor = monthlyData[0]?.keuntungan >= 0 ? "#22c55e" : "#ef4444"
   const profitColorStops =
     monthlyData.length > 1
@@ -347,10 +360,19 @@ export default function KeuntunganPage() {
     )
   }
 
+  const renderProfitDot = (props: { cx?: number; cy?: number; value?: number }) => {
+    const { cx, cy, value } = props
+    if (cx === undefined || cy === undefined || value === undefined) return null
+    const color = value >= 0 ? "#22c55e" : "#ef4444"
+    return <circle cx={cx} cy={cy} r={3} fill={color} stroke="#ffffff" strokeWidth={2} />
+  }
+
   const handlePrint = () => {
     const startLabel = monthOptions[Number.parseInt(startMonth)].label
     const endLabel = monthOptions[Number.parseInt(endMonth)].label
     const periodLabel = startMonth === endMonth ? startLabel : `${startLabel} - ${endLabel}`
+    const netProfitClass = totalKeuntungan >= 0 ? "positive" : "negative"
+    const marginClass = Number(profitMargin) >= 0 ? "positive" : "negative"
 
     const printContent = `
       <!DOCTYPE html>
@@ -389,11 +411,11 @@ export default function KeuntunganPage() {
           </div>
           <div class="stat-card">
             <div class="stat-label">Keuntungan Bersih</div>
-            <div class="stat-value positive">${formatCurrency(totalKeuntungan)}</div>
+            <div class="stat-value ${netProfitClass}">${formatCurrency(totalKeuntungan)}</div>
           </div>
           <div class="stat-card">
             <div class="stat-label">Margin Keuntungan</div>
-            <div class="stat-value">${profitMargin}%</div>
+            <div class="stat-value ${marginClass}">${profitMargin}%</div>
           </div>
         </div>
 
@@ -562,7 +584,15 @@ export default function KeuntunganPage() {
             <CardContent>
               <div className="h-56 lg:h-72">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={monthlyData}>
+                  <AreaChart
+                    data={animatedMonthlyData}
+                    margin={{
+                      top: 10,
+                      right: 16,
+                      left: -10,
+                      bottom: 0,
+                    }}
+                  >
                     <defs>
                       <linearGradient id="colorProfitPositive" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
@@ -580,8 +610,14 @@ export default function KeuntunganPage() {
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} />
                     <XAxis dataKey="month" stroke={chartColors.text} fontSize={11} />
-                    <YAxis stroke={chartColors.text} fontSize={11} tickFormatter={(value) => `${value / 1000000}jt`} />
+                    <YAxis
+                      domain={profitYAxisDomain}
+                      stroke={chartColors.text}
+                      fontSize={11}
+                      tickFormatter={(value) => `${Math.round(value / 1000000)}jt`}
+                    />
                     <Tooltip content={renderProfitTooltip} cursor={{ stroke: chartColors.text, strokeDasharray: "3 3" }} />
+                    <ReferenceLine y={0} stroke={chartColors.text} strokeDasharray="4 4" />
                     <Area
                       type="monotone"
                       dataKey="negativeProfit"
@@ -589,7 +625,8 @@ export default function KeuntunganPage() {
                       strokeWidth={2}
                       fillOpacity={1}
                       fill="url(#colorProfitNegative)"
-                      isAnimationActive={false}
+                      {...animationConfig}
+                      dot={{ stroke: "#ef4444", strokeWidth: 2, r: 3 }}
                     />
                     <Area
                       type="monotone"
@@ -598,16 +635,18 @@ export default function KeuntunganPage() {
                       strokeWidth={2}
                       fillOpacity={1}
                       fill="url(#colorProfitPositive)"
-                      isAnimationActive={false}
+                      {...animationConfig}
                       connectNulls
+                      dot={{ stroke: "#22c55e", strokeWidth: 2, r: 3 }}
                     />
                     <Line
                       type="monotone"
                       dataKey="keuntungan"
                       stroke="url(#profitLineGradient)"
                       strokeWidth={3}
-                      dot={false}
-                      isAnimationActive={false}
+                      dot={renderProfitDot}
+                      activeDot={renderProfitDot}
+                      {...animationConfig}
                     />
                   </AreaChart>
                 </ResponsiveContainer>

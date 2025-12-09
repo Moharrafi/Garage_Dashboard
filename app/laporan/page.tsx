@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { Sidebar } from "@/components/sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,6 +20,9 @@ export default function LaporanPage() {
   const [reportType, setReportType] = useState("stok")
   const [dateFrom, setDateFrom] = useState("")
   const [dateTo, setDateTo] = useState("")
+  const searchParams = useSearchParams()
+  const initialSearch = searchParams.get("q") ?? ""
+  const [searchQuery, setSearchQuery] = useState(initialSearch)
   const [items, setItems] = useState<Item[]>([])
   const [units, setUnits] = useState<Unit[]>([])
   const [transactions, setTransactions] = useState<StockTransaction[]>([])
@@ -45,6 +49,10 @@ export default function LaporanPage() {
     }
     fetchData()
   }, [])
+
+  useEffect(() => {
+    setSearchQuery(initialSearch)
+  }, [initialSearch])
 
   const handlePrint = () => {
     const printContent = printRef.current
@@ -82,7 +90,17 @@ export default function LaporanPage() {
     }
   }
 
-  const filteredUnits = units.filter((unit) => {
+  const normalizedQuery = searchQuery.trim().toLowerCase()
+
+  const matchesQuery = (...fields: Array<string | number | null | undefined>) => {
+    if (!normalizedQuery) return true
+    return fields.some((field) => {
+      if (field === null || field === undefined) return false
+      return field.toString().toLowerCase().includes(normalizedQuery)
+    })
+  }
+
+  const dateFilteredUnits = units.filter((unit) => {
     if (!dateFrom && !dateTo) return true
     const checkInDate = new Date(unit.check_in_date)
     const from = dateFrom ? new Date(dateFrom) : new Date("1970-01-01")
@@ -90,13 +108,23 @@ export default function LaporanPage() {
     return checkInDate >= from && checkInDate <= to
   })
 
-  const filteredTransactions = transactions.filter((tx) => {
+  const filteredUnits = dateFilteredUnits.filter((unit) =>
+    matchesQuery(unit.brand, unit.vehicle_type, unit.owner_name, unit.service_type, unit.status),
+  )
+
+  const dateFilteredTransactions = transactions.filter((tx) => {
     if (!dateFrom && !dateTo) return true
     const txDate = new Date(tx.created_at)
     const from = dateFrom ? new Date(dateFrom) : new Date("1970-01-01")
     const to = dateTo ? new Date(dateTo) : new Date("2099-12-31")
     return txDate >= from && txDate <= to
   })
+
+  const filteredTransactions = dateFilteredTransactions.filter((tx) =>
+    matchesQuery(tx.item_name, tx.type, tx.note, tx.created_at ? formatDate(tx.created_at) : undefined, tx.quantity),
+  )
+
+  const filteredItems = items.filter((item) => matchesQuery(item.name, item.category, item.unit, item.id))
 
   if (isLoading) {
     return (
@@ -115,7 +143,12 @@ export default function LaporanPage() {
 
       <PageTransition>
         <main className="lg:ml-64 p-6 transition-all duration-300">
-        <DashboardHeader title="Laporan" subtitle="Cetak dan unduh laporan bengkel" />
+        <DashboardHeader
+          title="Laporan"
+          subtitle="Cetak dan unduh laporan bengkel"
+          searchValue={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
 
         {/* Report Type Selection */}
         <Card className="bg-card border-border mb-6">
@@ -141,23 +174,27 @@ export default function LaporanPage() {
                 </TabsList>
               </Tabs>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="date"
-                    value={dateFrom}
-                    onChange={(e) => setDateFrom(e.target.value)}
-                    className="bg-secondary border-border w-full sm:w-auto"
-                    placeholder="Dari"
-                  />
-                  <span className="text-muted-foreground">-</span>
-                  <Input
-                    type="date"
-                    value={dateTo}
-                    onChange={(e) => setDateTo(e.target.value)}
-                    className="bg-secondary border-border w-full sm:w-auto"
-                  />
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <div className="flex w-full items-center gap-2 text-sm sm:text-base flex-nowrap overflow-x-auto pb-1">
+                  <div className="flex items-center gap-1 flex-1 min-w-[150px]">
+                    <span className="text-muted-foreground whitespace-nowrap">Dari:</span>
+                    <Input
+                      type="date"
+                      value={dateFrom}
+                      onChange={(e) => setDateFrom(e.target.value)}
+                      className="bg-secondary border-border flex-1 min-w-[110px]"
+                      placeholder="Dari"
+                    />
+                  </div>
+                  <div className="flex items-center gap-1 flex-1 min-w-[150px]">
+                    <span className="text-muted-foreground whitespace-nowrap">Sampai:</span>
+                    <Input
+                      type="date"
+                      value={dateTo}
+                      onChange={(e) => setDateTo(e.target.value)}
+                      className="bg-secondary border-border flex-1 min-w-[110px]"
+                    />
+                  </div>
                 </div>
                 <Button onClick={handlePrint} className="bg-primary text-primary-foreground">
                   <Printer className="h-4 w-4 mr-2" />
@@ -182,48 +219,52 @@ export default function LaporanPage() {
             <div ref={printRef}>
               {/* Stock Report */}
               {reportType === "stok" && (
-                <div className="overflow-x-auto">
-                <Table className="min-w-[820px] table-auto md:table-fixed border-separate border-spacing-0">
-                  <TableHeader>
-                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
-                      <TableHead>No</TableHead>
-                      <TableHead>Nama Barang</TableHead>
-                      <TableHead>Kategori</TableHead>
-                      <TableHead className="text-right">Stok</TableHead>
-                      <TableHead className="text-right">Min. Stok</TableHead>
-                      <TableHead className="text-right">Harga</TableHead>
-                      <TableHead>Status</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                      <TableBody className="divide-y divide-border/40">
-                      {items.map((item, index) => (
-                        <TableRow key={item.id} className="border-b border-border/60 last:border-b-0">
-                          <TableCell className="text-muted-foreground py-4">{index + 1}</TableCell>
-                          <TableCell className="font-medium text-card-foreground py-4">{item.name}</TableCell>
-                          <TableCell className="text-muted-foreground py-4">{item.category}</TableCell>
-                          <TableCell className="text-right text-card-foreground py-4">
-                            {item.stock} {item.unit}
-                          </TableCell>
-                          <TableCell className="text-right text-muted-foreground py-4">{item.min_stock}</TableCell>
-                          <TableCell className="text-right text-card-foreground py-4">
-                            {formatCurrency(item.price)}
-                          </TableCell>
-                          <TableCell className="py-4">
-                            {item.stock <= item.min_stock ? (
-                              <Badge className="bg-destructive/15 text-destructive border border-destructive/30">Menipis</Badge>
-                            ) : (
-                              <Badge className="bg-success/15 text-success border border-success/30">Tersedia</Badge>
-                            )}
-                          </TableCell>
+                <div className="space-y-4">
+                  <div className="rounded-xl border border-border/80 overflow-hidden bg-card">
+                    <Table className="min-w-[820px] table-auto lg:table-fixed border-collapse">
+                      <TableHeader>
+                        <TableRow className="bg-muted/60 border-b border-border/40 [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th]:text-center">
+                          <TableHead>No</TableHead>
+                          <TableHead>Nama Barang</TableHead>
+                          <TableHead>Kategori</TableHead>
+                          <TableHead className="text-right">Stok</TableHead>
+                          <TableHead className="text-right">Min. Stok</TableHead>
+                          <TableHead className="text-right">Harga</TableHead>
+                          <TableHead>Status</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <div className="mt-4 p-4 bg-secondary rounded-lg">
+                      </TableHeader>
+                      <TableBody>
+                        {filteredItems.map((item, index) => (
+                          <TableRow key={item.id} className="border-b border-border/50 last:border-b-0 [&>td]:text-center">
+                            <TableCell className="text-muted-foreground py-4">{index + 1}</TableCell>
+                            <TableCell className="font-medium text-card-foreground py-4">{item.name}</TableCell>
+                            <TableCell className="text-muted-foreground py-4">{item.category}</TableCell>
+                            <TableCell className="text-card-foreground py-4">
+                              {item.stock} {item.unit}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground py-4">{item.min_stock}</TableCell>
+                            <TableCell className="text-card-foreground py-4">
+                              {formatCurrency(item.price)}
+                            </TableCell>
+                            <TableCell className="py-4">
+                              {item.stock <= item.min_stock ? (
+                                <Badge className="bg-destructive/15 text-destructive border border-destructive/30">
+                                  Menipis
+                                </Badge>
+                              ) : (
+                                <Badge className="bg-success/15 text-success border border-success/30">Tersedia</Badge>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                  <div className="p-4 bg-secondary rounded-lg">
                     <p className="text-card-foreground font-medium">
-                      Total Jenis Barang: {items.length} | Total Stok:{" "}
-                      {items.reduce((sum, item) => sum + item.stock, 0)} | Nilai Inventaris:{" "}
-                      {formatCurrency(items.reduce((sum, item) => sum + item.stock * item.price, 0))}
+                      Total Jenis Barang: {filteredItems.length} | Total Stok:{" "}
+                      {filteredItems.reduce((sum, item) => sum + item.stock, 0)} | Nilai Inventaris:{" "}
+                      {formatCurrency(filteredItems.reduce((sum, item) => sum + item.stock * item.price, 0))}
                     </p>
                   </div>
                 </div>
@@ -231,47 +272,49 @@ export default function LaporanPage() {
 
               {/* Transaction Report */}
               {reportType === "transaksi" && (
-                <div className="overflow-x-auto">
-                <Table className="min-w-[820px] table-auto md:table-fixed border-separate border-spacing-0">
-                  <TableHeader>
-                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
-                      <TableHead>No</TableHead>
-                      <TableHead>Tanggal</TableHead>
-                      <TableHead>Tipe</TableHead>
-                      <TableHead>Nama Barang</TableHead>
-                      <TableHead className="text-right">Jumlah</TableHead>
-                      <TableHead>Keterangan</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                <TableBody className="divide-y divide-border/40">
-                      {filteredTransactions.map((tx, index) => (
-                        <TableRow key={tx.id} className="border-b border-border/60 last:border-b-0">
-                          <TableCell className="text-muted-foreground">{index + 1}</TableCell>
-                          <TableCell className="text-muted-foreground">{formatDate(tx.created_at)}</TableCell>
-                          <TableCell>
-                            <Badge
-                              className={
-                                tx.type === "masuk"
-                                  ? "bg-success/20 text-success"
-                                  : "bg-destructive/20 text-destructive"
-                              }
-                            >
-                              {tx.type === "masuk" ? "Masuk" : "Keluar"}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="font-medium text-card-foreground">{tx.item_name}</TableCell>
-                          <TableCell
-                            className={`text-right font-medium ${tx.type === "masuk" ? "text-success" : "text-destructive"}`}
-                          >
-                            {tx.type === "masuk" ? "+" : "-"}
-                            {tx.quantity}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">{tx.note}</TableCell>
+                <div className="space-y-4">
+                  <div className="rounded-xl border border-border/80 overflow-hidden bg-card">
+                    <Table className="min-w-[820px] table-auto lg:table-fixed border-collapse">
+                      <TableHeader>
+                        <TableRow className="bg-muted/60 border-b border-border/40 [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th]:text-center">
+                          <TableHead>No</TableHead>
+                          <TableHead>Tanggal</TableHead>
+                          <TableHead>Tipe</TableHead>
+                          <TableHead>Nama Barang</TableHead>
+                          <TableHead className="text-right">Jumlah</TableHead>
+                          <TableHead>Keterangan</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <div className="mt-4 p-4 bg-secondary rounded-lg">
+                      </TableHeader>
+                      <TableBody>
+                        {filteredTransactions.map((tx, index) => (
+                          <TableRow key={tx.id} className="border-b border-border/50 last:border-b-0 [&>td]:text-center">
+                            <TableCell className="text-muted-foreground">{index + 1}</TableCell>
+                            <TableCell className="text-muted-foreground">{formatDate(tx.created_at)}</TableCell>
+                            <TableCell>
+                              <Badge
+                                className={
+                                  tx.type === "masuk"
+                                    ? "bg-success/20 text-success"
+                                    : "bg-destructive/20 text-destructive"
+                                }
+                              >
+                                {tx.type === "masuk" ? "Masuk" : "Keluar"}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="font-medium text-card-foreground">{tx.item_name}</TableCell>
+                            <TableCell
+                              className={`font-medium ${tx.type === "masuk" ? "text-success" : "text-destructive"}`}
+                            >
+                              {tx.type === "masuk" ? "+" : "-"}
+                              {tx.quantity}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">{tx.note}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                  <div className="p-4 bg-secondary rounded-lg">
                     <p className="text-card-foreground font-medium">
                       Total Transaksi: {filteredTransactions.length} | Barang Masuk:{" "}
                       {filteredTransactions.filter((t) => t.type === "masuk").reduce((sum, t) => sum + t.quantity, 0)} |
@@ -284,40 +327,42 @@ export default function LaporanPage() {
 
               {/* Unit Report */}
               {reportType === "unit" && (
-                <div className="overflow-x-auto">
-                <Table className="min-w-[820px] table-auto md:table-fixed border-separate border-spacing-0">
-                  <TableHeader>
-                    <TableRow className="bg-muted/60 border border-border rounded-lg overflow-hidden shadow-sm dark:shadow-[0_1px_4px_rgba(0,0,0,0.45)] [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th:first-child]:rounded-l-lg [&>th:last-child]:rounded-r-lg">
-                      <TableHead>No</TableHead>
-                      <TableHead>Kendaraan</TableHead>
-                      <TableHead>Pemilik</TableHead>
-                      <TableHead>Layanan</TableHead>
-                      <TableHead>Check-in</TableHead>
-                      <TableHead>Check-out</TableHead>
-                      <TableHead className="text-right">Biaya</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody className="divide-y divide-border/40">
-                      {filteredUnits.map((unit, index) => (
-                        <TableRow key={unit.id} className="border-b border-border/60 last:border-b-0">
-                          <TableCell className="text-muted-foreground">{index + 1}</TableCell>
-                          <TableCell className="text-card-foreground">
-                            {unit.brand} ({unit.vehicle_type})
-                          </TableCell>
-                          <TableCell className="text-card-foreground">{unit.owner_name}</TableCell>
-                          <TableCell className="text-muted-foreground capitalize">{unit.service_type}</TableCell>
-                          <TableCell className="text-muted-foreground">{formatDate(unit.check_in_date)}</TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {unit.check_out_date ? formatDate(unit.check_out_date) : "-"}
-                          </TableCell>
-                          <TableCell className="text-right text-card-foreground">
-                            {formatCurrency(unit.final_cost || unit.estimated_cost)}
-                          </TableCell>
+                <div className="space-y-4">
+                  <div className="rounded-xl border border-border/80 overflow-hidden bg-card">
+                    <Table className="min-w-[820px] table-auto lg:table-fixed border-collapse">
+                      <TableHeader>
+                        <TableRow className="bg-muted/60 border-b border-border/40 [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th]:text-center">
+                          <TableHead>No</TableHead>
+                          <TableHead>Kendaraan</TableHead>
+                          <TableHead>Pemilik</TableHead>
+                          <TableHead>Layanan</TableHead>
+                          <TableHead>Check-in</TableHead>
+                          <TableHead>Check-out</TableHead>
+                          <TableHead className="text-right">Biaya</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <div className="mt-4 p-4 bg-secondary rounded-lg">
+                      </TableHeader>
+                      <TableBody>
+                        {filteredUnits.map((unit, index) => (
+                          <TableRow key={unit.id} className="border-b border-border/50 last:border-b-0 [&>td]:text-center">
+                            <TableCell className="text-muted-foreground">{index + 1}</TableCell>
+                            <TableCell className="text-card-foreground">
+                              {unit.brand} ({unit.vehicle_type})
+                            </TableCell>
+                            <TableCell className="text-card-foreground">{unit.owner_name}</TableCell>
+                            <TableCell className="text-muted-foreground capitalize">{unit.service_type}</TableCell>
+                            <TableCell className="text-muted-foreground">{formatDate(unit.check_in_date)}</TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {unit.check_out_date ? formatDate(unit.check_out_date) : "-"}
+                            </TableCell>
+                            <TableCell className="text-card-foreground">
+                              {formatCurrency(unit.final_cost || unit.estimated_cost)}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                  <div className="p-4 bg-secondary rounded-lg">
                     <p className="text-card-foreground font-medium">
                       Total Unit: {filteredUnits.length} | Selesai:{" "}
                       {filteredUnits.filter((u) => u.status === "check-out" || u.status === "selesai").length} | Total

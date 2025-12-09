@@ -91,3 +91,14 @@ export interface NotificationItem {
   is_read: boolean
   created_at: Date
 }
+
+export type SearchCategory = "stok" | "transaksi" | "unit"
+
+export interface GlobalSearchItem {
+  id: string
+  title: string
+  subtitle?: string
+  category: SearchCategory
+  href: string
+  keywords?: string[]
+}
