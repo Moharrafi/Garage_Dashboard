@@ -16,6 +16,8 @@ import {
   Eye,
   EyeOff,
   Loader2,
+  Maximize2,
+  Minimize2,
 } from "lucide-react"
 import { Sidebar } from "@/components/sidebar"
 import { DashboardHeader } from "@/components/dashboard-header"
@@ -28,6 +30,7 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { PageTransition } from "@/components/page-transition"
 import { useToast } from "@/components/toast-notification"
 import { apiFetch } from "@/lib/api"
@@ -71,6 +74,14 @@ export default function ProfilPage() {
   const [savingPassword, setSavingPassword] = useState(false)
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
   const avatarInputRef = useRef<HTMLInputElement | null>(null)
+  const [cropModalOpen, setCropModalOpen] = useState(false)
+  const [cropImageSrc, setCropImageSrc] = useState<string | null>(null)
+  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 })
+  const [cropScale, setCropScale] = useState(1)
+  const [baseScale, setBaseScale] = useState(1)
+  const [cropPosition, setCropPosition] = useState({ x: 0, y: 0 })
+  const dragState = useRef({ active: false, startX: 0, startY: 0, lastX: 0, lastY: 0 })
+  const [pendingFile, setPendingFile] = useState<File | null>(null)
   const { showToast } = useToast()
 
   const formatJoinDate = (value?: string | null) => {
@@ -196,16 +207,156 @@ export default function ProfilPage() {
     }
   }
 
-  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target
     const file = input.files?.[0]
     if (!file) return
+    if (!file.type.startsWith("image/")) {
+      showToast("Format file tidak didukung", "error")
+      input.value = ""
+      return
+    }
 
-    const formData = new FormData()
-    formData.append("avatar", file)
+    const reader = new FileReader()
+    reader.onload = () => {
+      const src = reader.result as string
+      const img = new Image()
+      img.onload = () => {
+        const cropBox = 280
+        const coverScale = Math.max(cropBox / img.width, cropBox / img.height)
+        setCropScale(coverScale)
+        setBaseScale(coverScale)
+        setCropPosition({ x: 0, y: 0 })
+        setImageDimensions({ width: img.width, height: img.height })
+        setCropImageSrc(src)
+        setPendingFile(file)
+        setCropModalOpen(true)
+      }
+      img.onerror = () => {
+        showToast("Tidak dapat membaca gambar", "error")
+        input.value = ""
+      }
+      img.src = src
+    }
+    reader.onerror = () => {
+      showToast("Gagal memuat gambar", "error")
+      input.value = ""
+    }
+    reader.readAsDataURL(file)
+  }
 
+  const clampPosition = useCallback(
+    (next: { x: number; y: number }) => {
+      const cropBox = 280
+      if (!imageDimensions.width || !imageDimensions.height) return { x: 0, y: 0 }
+      const scaledWidth = imageDimensions.width * cropScale
+      const scaledHeight = imageDimensions.height * cropScale
+      const maxX = Math.max(0, (scaledWidth - cropBox) / 2)
+      const maxY = Math.max(0, (scaledHeight - cropBox) / 2)
+      return {
+        x: Math.min(maxX, Math.max(-maxX, next.x)),
+        y: Math.min(maxY, Math.max(-maxY, next.y)),
+      }
+    },
+    [cropScale, imageDimensions.height, imageDimensions.width],
+  )
+
+  useEffect(() => {
+    setCropPosition((prev) => clampPosition(prev))
+  }, [clampPosition, cropScale])
+
+  const closeCropModal = () => {
+    setCropModalOpen(false)
+    setCropImageSrc(null)
+    setPendingFile(null)
+    setImageDimensions({ width: 0, height: 0 })
+    setCropPosition({ x: 0, y: 0 })
+    setCropScale(1)
+    setBaseScale(1)
+    if (avatarInputRef.current) {
+      avatarInputRef.current.value = ""
+    }
+  }
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    dragState.current = {
+      active: true,
+      startX: event.clientX,
+      startY: event.clientY,
+      lastX: cropPosition.x,
+      lastY: cropPosition.y,
+    }
+    ;(event.target as HTMLElement).setPointerCapture?.(event.pointerId)
+  }
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current.active) return
+    const deltaX = event.clientX - dragState.current.startX
+    const deltaY = event.clientY - dragState.current.startY
+    const next = clampPosition({ x: dragState.current.lastX + deltaX, y: dragState.current.lastY + deltaY })
+    setCropPosition(next)
+  }
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!dragState.current.active) return
+    dragState.current = { ...dragState.current, active: false }
+    ;(event.target as HTMLElement).releasePointerCapture?.(event.pointerId)
+  }
+
+  const createCroppedBlob = () => {
+    return new Promise<Blob>((resolve, reject) => {
+      if (!cropImageSrc || !imageDimensions.width || !pendingFile) {
+        reject(new Error("Gambar belum siap"))
+        return
+      }
+      const image = new Image()
+      image.crossOrigin = "anonymous"
+      image.onload = () => {
+        const cropBox = 280
+        const canvasSize = 512
+        const canvas = document.createElement("canvas")
+        canvas.width = canvasSize
+        canvas.height = canvasSize
+        const ctx = canvas.getContext("2d")
+        if (!ctx) {
+          reject(new Error("Canvas tidak tersedia"))
+          return
+        }
+        ctx.imageSmoothingQuality = "high"
+        const scaledWidth = imageDimensions.width * cropScale
+        const scaledHeight = imageDimensions.height * cropScale
+        const visibleX = Math.max(0, (scaledWidth - cropBox) / 2 - cropPosition.x)
+        const visibleY = Math.max(0, (scaledHeight - cropBox) / 2 - cropPosition.y)
+        const sourceX = visibleX / cropScale
+        const sourceY = visibleY / cropScale
+        const sourceSize = cropBox / cropScale
+        ctx.drawImage(image, sourceX, sourceY, sourceSize, sourceSize, 0, 0, canvasSize, canvasSize)
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob)
+            } else {
+              reject(new Error("Gagal membuat gambar hasil crop"))
+            }
+          },
+          pendingFile.type || "image/png",
+          0.95,
+        )
+      }
+      image.onerror = () => reject(new Error("Tidak dapat merender gambar"))
+      image.src = cropImageSrc
+    })
+  }
+
+  const handleCropAndUpload = async () => {
+    if (!pendingFile) return
     setUploadingAvatar(true)
     try {
+      const blob = await createCroppedBlob()
+      const formData = new FormData()
+      const extension = pendingFile.type === "image/png" ? "png" : pendingFile.type === "image/jpeg" ? "jpg" : "png"
+      formData.append("avatar", blob, `${pendingFile.name.split(".")[0] || "avatar"}-cropped.${extension}`)
+
       const response = await fetch("/api/profile/avatar", {
         method: "POST",
         body: formData,
@@ -221,13 +372,16 @@ export default function ProfilPage() {
       setProfileData((prev) => (prev ? { ...prev, avatar_url: data.avatar_url } : prev))
       setProfileForm((prev) => ({ ...prev, avatar_url: data.avatar_url }))
       showToast("Foto profil berhasil diperbarui", "success")
+      closeCropModal()
     } catch (error) {
-      console.error("Gagal mengunggah foto profil:", error)
-      const message = error instanceof Error ? error.message : "Gagal mengunggah foto profil"
+      console.error("Gagal memproses foto profil:", error)
+      const message = error instanceof Error ? error.message : "Gagal memproses foto profil"
       showToast(message, "error")
     } finally {
-      input.value = ""
       setUploadingAvatar(false)
+      if (avatarInputRef.current) {
+        avatarInputRef.current.value = ""
+      }
     }
   }
 
@@ -299,7 +453,7 @@ export default function ProfilPage() {
                               type="file"
                               accept="image/*"
                               className="hidden"
-                              onChange={handleAvatarUpload}
+                              onChange={handleAvatarSelect}
                             />
                           </div>
                         <h3 className="mt-4 text-lg font-semibold text-card-foreground">{profileForm.full_name}</h3>
@@ -592,6 +746,68 @@ export default function ProfilPage() {
           </div>
         </div>
       </PageTransition>
+      <Dialog open={cropModalOpen} onOpenChange={(open) => (!open ? closeCropModal() : setCropModalOpen(open))}>
+        <DialogContent className="bg-card border-border max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="text-card-foreground">Atur Foto Profil</DialogTitle>
+            <DialogDescription>Sesuaikan posisi dan ukuran foto sebelum disimpan.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div
+              className="relative mx-auto h-[280px] w-[280px] overflow-hidden rounded-full border border-border bg-muted/30 cursor-grab active:cursor-grabbing"
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerLeave={handlePointerUp}
+            >
+              {cropImageSrc ? (
+                <img
+                  src={cropImageSrc}
+                  alt="Crop preview"
+                  className="absolute left-1/2 top-1/2 select-none"
+                  style={{
+                    width: imageDimensions.width * cropScale,
+                    height: imageDimensions.height * cropScale,
+                    transform: `translate(-50%, -50%) translate(${cropPosition.x}px, ${cropPosition.y}px)`,
+                    userSelect: "none",
+                    pointerEvents: "none",
+                  }}
+                  draggable={false}
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">
+                  Memuat gambar...
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              <Minimize2 className="h-4 w-4 text-muted-foreground" />
+              <input
+                type="range"
+                min={baseScale}
+                max={baseScale * 3}
+                step={0.01}
+                value={cropScale}
+                onChange={(e) => setCropScale(parseFloat(e.target.value))}
+                className="flex-1"
+              />
+              <Maximize2 className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <p className="text-xs text-muted-foreground text-center">
+              Seret foto untuk mengatur posisi. Ukuran akhir 512x512 piksel.
+            </p>
+          </div>
+          <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+            <Button variant="ghost" onClick={closeCropModal} disabled={uploadingAvatar}>
+              Batal
+            </Button>
+            <Button onClick={handleCropAndUpload} disabled={uploadingAvatar || !cropImageSrc}>
+              {uploadingAvatar ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Camera className="h-4 w-4 mr-2" />}
+              Simpan Foto
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

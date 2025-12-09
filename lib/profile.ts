@@ -54,7 +54,7 @@ async function ensureProfileTable() {
       address TEXT,
       workshop_name VARCHAR(191),
       role ENUM('admin','staff','owner') NOT NULL DEFAULT 'staff',
-      avatar_url TEXT,
+      avatar_url LONGTEXT,
       join_date DATE DEFAULT (CURRENT_DATE),
       notify_email TINYINT(1) DEFAULT 1,
       notify_push TINYINT(1) DEFAULT 1,
@@ -65,7 +65,29 @@ async function ensureProfileTable() {
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )
   `)
+  await ensureLargeAvatarColumn()
+}
 
+async function ensureLargeAvatarColumn() {
+  const columnInfo = await query<{ data_type: string | null }[]>(
+    `
+      SELECT DATA_TYPE as data_type
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE()
+        AND TABLE_NAME = ?
+        AND COLUMN_NAME = 'avatar_url'
+    `,
+    [PROFILE_TABLE],
+  )
+
+  if (columnInfo.length === 0) {
+    return
+  }
+
+  const dataType = columnInfo[0].data_type?.toLowerCase()
+  if (dataType !== "longtext") {
+    await query(`ALTER TABLE ${PROFILE_TABLE} MODIFY COLUMN avatar_url LONGTEXT NULL`)
+  }
 }
 
 function mapProfile(row: ProfileRow): AdminProfileRecord {

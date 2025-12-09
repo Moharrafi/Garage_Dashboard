@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS admin_profiles (
   address TEXT,
   workshop_name VARCHAR(191),
   role ENUM('admin','staff','owner') NOT NULL DEFAULT 'staff',
-  avatar_url TEXT,
+  avatar_url LONGTEXT,
   join_date DATE DEFAULT (CURRENT_DATE),
   notify_email TINYINT(1) DEFAULT 1,
   notify_push TINYINT(1) DEFAULT 1,
