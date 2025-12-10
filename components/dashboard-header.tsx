@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react"
 import { Bell, Search, User, Settings, LogOut, X, Check, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -27,6 +27,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { apiFetch } from "@/lib/api"
 import type { AdminProfile, NotificationType, GlobalSearchItem, SearchCategory } from "@/lib/types"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface DashboardHeaderProps {
   title: string
@@ -90,6 +91,7 @@ export function DashboardHeader({
   onSelectSuggestion,
 }: DashboardHeaderProps) {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const [notifications, setNotifications] = useState<NotificationState[]>([])
   const [notificationsLoaded, setNotificationsLoaded] = useState(false)
   const [showLogoutDialog, setShowLogoutDialog] = useState(false)
@@ -103,6 +105,9 @@ export function DashboardHeader({
     avatar_url: "",
   })
   const searchInputValue = externalSearchValue ?? internalSearch
+  const notificationDropdownStyle: CSSProperties | undefined = isMobile
+    ? { width: "calc(100vw - 40px)", maxWidth: "calc(100vw - 40px)" }
+    : undefined
 
   const filteredSuggestions = useMemo(() => {
     const pool = searchSuggestions?.length ? searchSuggestions : globalSearchData
@@ -342,8 +347,10 @@ export function DashboardHeader({
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 className="w-[340px] p-0 rounded-xl shadow-2xl border-border/50"
-                align="end"
-                sideOffset={8}
+                align={isMobile ? "center" : "end"}
+                sideOffset={isMobile ? 14 : 8}
+                style={notificationDropdownStyle}
+                collisionPadding={isMobile ? 16 : 8}
               >
                 <div className="p-4 border-b border-border/50 bg-muted/30">
                   <div className="flex items-center justify-between">

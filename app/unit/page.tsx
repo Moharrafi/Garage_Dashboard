@@ -637,8 +637,8 @@ export default function UnitPage() {
           <CardContent>
             {viewMode === "table" ? (
               <div className="overflow-x-auto">
-                <div className="min-w-[900px] rounded-xl border border-border/80 overflow-hidden bg-card">
-                  <Table className="w-full table-auto lg:table-fixed border-collapse">
+                <div className="min-w-[960px] rounded-xl border border-border/80 overflow-hidden bg-card">
+                  <Table className="w-full min-w-[1050px] table-auto border-collapse">
                     <TableHeader>
                       <TableRow className="bg-muted/60 border-b border-border/40 [&>th]:px-4 [&>th]:py-3 [&>th]:text-muted-foreground [&>th]:text-left md:[&>th]:text-center">
                         <TableHead>Kendaraan</TableHead>
@@ -673,7 +673,7 @@ export default function UnitPage() {
                           return (
                             <TableRow
                               key={unit.id}
-                              className="border-b border-border/50 last:border-b-0 [&>td]:px-4 [&>td]:py-4 [&>td]:text-left md:[&>td]:text-center"
+                              className="border-b border-border/50 last:border-b-0 [&>td]:px-4 md:[&>td]:px-5 [&>td]:py-5 [&>td]:text-left md:[&>td]:text-center"
                             >
                               <TableCell className="text-left">
                                 <div>

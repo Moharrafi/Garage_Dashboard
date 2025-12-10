@@ -45,12 +45,24 @@ const menuSections = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(() => {
+    if (typeof window === "undefined") return false
+    return window.localStorage.getItem("sidebar-collapsed") === "true"
+  })
   const [mobileOpen, setMobileOpen] = useState(false)
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const storedState = window.localStorage.getItem("sidebar-collapsed")
+    if (storedState !== null) {
+      setCollapsed(storedState === "true")
+    }
+  }, [])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       document.documentElement.style.setProperty("--sidebar-width", collapsed ? "4rem" : "16rem")
+      window.localStorage.setItem("sidebar-collapsed", collapsed ? "true" : "false")
     }
   }, [collapsed])
 
