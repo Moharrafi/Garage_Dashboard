@@ -57,6 +57,28 @@ const EMPLOYEE_COUNT = 4
 const ELECTRICITY_TOP_UP_COST = 100_000
 const ELECTRICITY_TOP_UPS = 3 // gunakan estimasi maksimal 3 kali pengisian per bulan
 const OTHER_OPERATIONAL_EXPENSE = 1_440_000
+const formatProfitAxisTick = (value: number) => {
+  const absValue = Math.abs(value)
+  const sign = value < 0 ? "-" : ""
+
+  const formatFraction = (num: number) => {
+    const decimals = num >= 100 ? 0 : num >= 10 ? 1 : num >= 1 ? 2 : 3
+    const formatted = Number(num.toFixed(decimals))
+    return formatted % 1 === 0 ? formatted.toFixed(0) : formatted.toString()
+  }
+
+  if (absValue >= 1_000_000_000_000) {
+    return `${sign}${formatFraction(absValue / 1_000_000_000_000)}T`
+  }
+  if (absValue >= 1_000_000_000) {
+    return `${sign}${formatFraction(absValue / 1_000_000_000)}M`
+  }
+  const inMillions = absValue / 1_000_000
+  if (inMillions >= 1) {
+    return `${sign}${formatFraction(inMillions)}jt`
+  }
+  return `${sign}${formatFraction(inMillions)}jt`
+}
 
 export default function KeuntunganPage() {
   const [startMonth, setStartMonth] = useState("0")
@@ -609,7 +631,7 @@ export default function KeuntunganPage() {
                       domain={profitYAxisDomain}
                       stroke={chartColors.text}
                       fontSize={11}
-                      tickFormatter={(value) => `${Math.round(value / 1000000)}jt`}
+                      tickFormatter={(value) => formatProfitAxisTick(value)}
                     />
                     <Tooltip content={renderProfitTooltip} cursor={{ stroke: chartColors.text, strokeDasharray: "3 3" }} />
                     <ReferenceLine y={0} stroke={chartColors.text} strokeDasharray="4 4" />

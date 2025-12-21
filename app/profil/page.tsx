@@ -747,7 +747,7 @@ export default function ProfilPage() {
         </div>
       </PageTransition>
       <Dialog open={cropModalOpen} onOpenChange={(open) => (!open ? closeCropModal() : setCropModalOpen(open))}>
-        <DialogContent className="bg-card border-border max-w-lg">
+        <DialogContent className="bg-card border-border max-w-lg animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
           <DialogHeader>
             <DialogTitle className="text-card-foreground">Atur Foto Profil</DialogTitle>
             <DialogDescription>Sesuaikan posisi dan ukuran foto sebelum disimpan.</DialogDescription>

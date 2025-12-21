@@ -254,7 +254,7 @@ export default function TransaksiPage() {
                       Tambah Transaksi
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-card border-border">
+                  <DialogContent className="bg-card border-border animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
                     <DialogHeader>
                       <DialogTitle className="text-card-foreground">Tambah Transaksi Stok</DialogTitle>
                       <DialogDescription>Catat barang masuk atau keluar dari inventaris.</DialogDescription>

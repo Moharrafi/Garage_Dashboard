@@ -1,75 +1,69 @@
--- Create items table for stock management
+-- =========================================
+-- MySQL 8+ schema: items, stock_transactions, units
+-- =========================================
+
+-- 1) ITEMS (stock master)
 CREATE TABLE IF NOT EXISTS items (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id CHAR(36) NOT NULL DEFAULT (UUID()),
   name TEXT NOT NULL,
-  category TEXT NOT NULL,
-  stock INTEGER NOT NULL DEFAULT 0,
-  min_stock INTEGER NOT NULL DEFAULT 0,
-  price INTEGER NOT NULL DEFAULT 0,
-  unit TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+  category VARCHAR(100) NOT NULL,
+  stock INT NOT NULL DEFAULT 0,
+  min_stock INT NOT NULL DEFAULT 0,
+  price INT NOT NULL DEFAULT 0,
+  unit VARCHAR(50) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create stock_transactions table for tracking stock in/out
+-- Auto-update updated_at (MySQL way)
+CREATE TRIGGER trg_items_updated_at
+BEFORE UPDATE ON items
+FOR EACH ROW
+SET NEW.updated_at = CURRENT_TIMESTAMP;
+
+
+-- 2) STOCK TRANSACTIONS (stock in/out log)
 CREATE TABLE IF NOT EXISTS stock_transactions (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  item_id UUID REFERENCES items(id) ON DELETE CASCADE,
+  id CHAR(36) NOT NULL DEFAULT (UUID()),
+  item_id CHAR(36) NOT NULL,
   item_name TEXT NOT NULL,
-  type TEXT NOT NULL CHECK (type IN ('masuk', 'keluar')),
-  quantity INTEGER NOT NULL,
-  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  type ENUM('masuk','keluar') NOT NULL,
+  quantity INT NOT NULL,
+  `date` DATE NOT NULL,
   note TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_stock_item_id (item_id),
+  KEY idx_stock_date (`date`),
+  CONSTRAINT fk_stock_item
+    FOREIGN KEY (item_id) REFERENCES items(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Create units table for check-in/out management
+
+-- 3) UNITS (workshop check-in/out)
 CREATE TABLE IF NOT EXISTS units (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  vehicle_type TEXT NOT NULL,
-  brand TEXT NOT NULL,
-  owner_name TEXT NOT NULL,
-  phone TEXT NOT NULL,
-  service_type TEXT NOT NULL CHECK (service_type IN ('servis', 'vapor', 'sandblasting', 'restorasi')),
-  status TEXT NOT NULL DEFAULT 'check-in' CHECK (status IN ('check-in', 'proses', 'selesai', 'check-out')),
-  check_in_date DATE NOT NULL DEFAULT CURRENT_DATE,
-  check_out_date DATE,
-  estimated_cost INTEGER NOT NULL DEFAULT 0,
-  final_cost INTEGER,
+  id CHAR(36) NOT NULL DEFAULT (UUID()),
+  vehicle_type VARCHAR(100) NOT NULL,
+  brand VARCHAR(100) NOT NULL,
+  owner_name VARCHAR(150) NOT NULL,
+  phone VARCHAR(30) NOT NULL,
+  service_type ENUM('servis','vapor','sandblasting','restorasi') NOT NULL,
+  status ENUM('check-in','proses','selesai','check-out') NOT NULL DEFAULT 'check-in',
+  check_in_date DATE NOT NULL,
+  check_out_date DATE NULL,
+  estimated_cost INT NOT NULL DEFAULT 0,
+  final_cost INT NULL,
   notes TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY idx_units_status (status),
+  KEY idx_units_checkin (check_in_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Enable Row Level Security (RLS) on all tables
--- For this workshop app, we allow public access since it's a single workshop management system
--- In production with multi-tenancy, you would add user_id columns and proper RLS policies
-
-ALTER TABLE items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE stock_transactions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE units ENABLE ROW LEVEL SECURITY;
-
--- Create policies to allow all operations (single workshop system)
-CREATE POLICY "Allow all operations on items" ON items FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all operations on stock_transactions" ON stock_transactions FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Allow all operations on units" ON units FOR ALL USING (true) WITH CHECK (true);
-
--- Create function to update updated_at timestamp
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-  NEW.updated_at = NOW();
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Create triggers for updated_at
-CREATE TRIGGER update_items_updated_at
-  BEFORE UPDATE ON items
-  FOR EACH ROW
-  EXECUTE FUNCTION update_updated_at_column();
-
-CREATE TRIGGER update_units_updated_at
-  BEFORE UPDATE ON units
-  FOR EACH ROW
-  EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER trg_units_updated_at
+BEFORE UPDATE ON units
+FOR EACH ROW
+SET NEW.updated_at = CURRENT_TIMESTAMP;

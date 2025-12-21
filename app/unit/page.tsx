@@ -494,7 +494,7 @@ export default function UnitPage() {
                         Check-in Unit Baru
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="bg-card border-border max-w-lg">
+                    <DialogContent className="bg-card border-border max-w-lg animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
                       <DialogHeader>
                         <DialogTitle className="text-card-foreground">Check-in Unit Baru</DialogTitle>
                         <DialogDescription>Daftarkan kendaraan baru untuk servis.</DialogDescription>
@@ -667,7 +667,7 @@ export default function UnitPage() {
                           const ServiceIcon = service.icon
                           const StatusIcon = status.icon
                           const normalizedStatus = unit.status.trim().toLowerCase()
-                          const canEdit = normalizedStatus === "check-in" || normalizedStatus === "proses"
+                          const canDelete = normalizedStatus === "check-in" || normalizedStatus === "proses"
                           const canUpdateStatus = normalizedStatus !== "check-out"
 
                           return (
@@ -715,20 +715,25 @@ export default function UnitPage() {
                                 {unit.notes || "-"}
                               </TableCell>
                               <TableCell>
-                                <div className="flex justify-start md:justify-center gap-1 items-center">
-                                  <Button variant="ghost" size="icon" className={darkButtonBorderClass} onClick={() => openViewDialog(unit)}>
-                                    <Eye className="h-4 w-4" />
-                                  </Button>
-                                  {canEdit && (
-                                    <>
-                                      <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className={darkButtonBorderClass}
-                                        onClick={() => openEditDialog(unit)}
-                                      >
-                                        <Edit className="h-4 w-4" />
-                                      </Button>
+                                <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center">
+                                  <div className="flex items-center gap-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className={darkButtonBorderClass}
+                                      onClick={() => openViewDialog(unit)}
+                                    >
+                                      <Eye className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className={darkButtonBorderClass}
+                                      onClick={() => openEditDialog(unit)}
+                                    >
+                                      <Edit className="h-4 w-4" />
+                                    </Button>
+                                    {canDelete && (
                                       <Button
                                         variant="ghost"
                                         size="icon"
@@ -737,13 +742,13 @@ export default function UnitPage() {
                                       >
                                         <Trash2 className="h-4 w-4" />
                                       </Button>
-                                    </>
-                                  )}
+                                    )}
+                                  </div>
                                   {canUpdateStatus && (
                                     <Button
                                       variant="outline"
                                       size="sm"
-                                      className={`${darkButtonBorderClass} ml-2`}
+                                      className={darkButtonBorderClass}
                                       onClick={() => openUpdateStatusDialog(unit)}
                                     >
                                       Update
@@ -812,11 +817,19 @@ export default function UnitPage() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className={`${darkButtonBorderClass} flex-1 bg-transparent`}
+                            className={`${darkButtonBorderClass} flex-1 bg-transparent`}
                               onClick={() => openViewDialog(unit)}
                             >
                               <Eye className="h-3 w-3 mr-1" />
                               Lihat
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className={`${darkButtonBorderClass} bg-transparent`}
+                              onClick={() => openEditDialog(unit)}
+                            >
+                              Edit
                             </Button>
                             {canUpdateStatus && (
                               <Button
@@ -852,7 +865,7 @@ export default function UnitPage() {
 
         {/* Edit Dialog */}
         <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-          <DialogContent className="bg-card border-border max-w-lg">
+          <DialogContent className="bg-card border-border max-w-lg animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
             <DialogHeader>
               <DialogTitle className="text-card-foreground">Edit Unit</DialogTitle>
               <DialogDescription>Ubah informasi unit kendaraan.</DialogDescription>
@@ -964,7 +977,7 @@ export default function UnitPage() {
 
         {/* View Dialog */}
         <Dialog open={isViewOpen} onOpenChange={setIsViewOpen}>
-          <DialogContent className="bg-card border-border">
+          <DialogContent className="bg-card border-border animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
             <DialogHeader>
               <DialogTitle className="text-card-foreground">Detail Unit</DialogTitle>
             </DialogHeader>
@@ -1040,7 +1053,7 @@ export default function UnitPage() {
 
         {/* Delete Confirmation Dialog */}
         <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
-          <AlertDialogContent className="bg-card border-border">
+          <AlertDialogContent className="bg-card border-border animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-card-foreground">Hapus Unit</AlertDialogTitle>
               <AlertDialogDescription>
@@ -1064,7 +1077,7 @@ export default function UnitPage() {
 
         {/* Update Status Dialog */}
         <Dialog open={isUpdateStatusOpen} onOpenChange={setIsUpdateStatusOpen}>
-          <DialogContent className="bg-card border-border">
+          <DialogContent className="bg-card border-border animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
             <DialogHeader>
               <DialogTitle className="text-card-foreground">Update Status Unit</DialogTitle>
               <DialogDescription>Ubah status unit {selectedUnit?.brand}.</DialogDescription>

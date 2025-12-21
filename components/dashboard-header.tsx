@@ -506,7 +506,7 @@ export function DashboardHeader({
       </header>
 
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent className="animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
           <AlertDialogHeader>
             <AlertDialogTitle>Konfirmasi Keluar</AlertDialogTitle>
             <AlertDialogDescription>

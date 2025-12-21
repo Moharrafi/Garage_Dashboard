@@ -274,7 +274,10 @@ export default function StokPage() {
                       Tambah Barang
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="bg-card border-border">
+                  <DialogContent
+                    className="bg-card border-border animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500"
+                    onOpenAutoFocus={(event) => event.preventDefault()}
+                  >
                     <DialogHeader>
                       <DialogTitle className="text-card-foreground">Tambah Barang Baru</DialogTitle>
                       <DialogDescription>
@@ -535,7 +538,7 @@ export default function StokPage() {
 
         {/* Edit Dialog */}
         <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-          <DialogContent className="bg-card border-border">
+          <DialogContent className="bg-card border-border animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
             <DialogHeader>
               <DialogTitle className="text-card-foreground">Edit Barang</DialogTitle>
               <DialogDescription>Ubah informasi barang.</DialogDescription>
@@ -648,7 +651,7 @@ export default function StokPage() {
 
         {/* Delete Confirmation Dialog */}
         <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
-          <AlertDialogContent className="bg-card border-border">
+          <AlertDialogContent className="bg-card border-border animate-in fade-in-0 zoom-in-95 slide-in-from-top-4 duration-500">
             <AlertDialogHeader>
               <AlertDialogTitle className="text-card-foreground">Hapus Barang</AlertDialogTitle>
               <AlertDialogDescription>

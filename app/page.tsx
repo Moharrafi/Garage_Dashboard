@@ -50,6 +50,25 @@ const serviceColors: Record<string, string> = {
   sandblasting: "#f59e0b",
   restorasi: "#8b5cf6",
 }
+const formatAxisValue = (value: number) => {
+  const absValue = Math.abs(value)
+  const sign = value < 0 ? "-" : ""
+
+  const formatFraction = (num: number) => {
+    const decimals = num >= 100 ? 0 : num >= 10 ? 1 : num >= 1 ? 2 : 3
+    const formatted = Number(num.toFixed(decimals))
+    return formatted % 1 === 0 ? formatted.toFixed(0) : formatted.toString()
+  }
+
+  if (absValue >= 1_000_000_000_000) {
+    return `${sign}${formatFraction(absValue / 1_000_000_000_000)}T`
+  }
+  if (absValue >= 1_000_000_000) {
+    return `${sign}${formatFraction(absValue / 1_000_000_000)}M`
+  }
+  const inMillions = absValue / 1_000_000
+  return `${sign}${formatFraction(inMillions)}jt`
+}
 
 export default function DashboardPage() {
   const { resolvedTheme } = useTheme()
@@ -276,7 +295,7 @@ export default function DashboardPage() {
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} />
                     <XAxis dataKey="month" stroke={chartColors.text} fontSize={11} />
-                    <YAxis stroke={chartColors.text} fontSize={11} tickFormatter={(value) => `${value / 1000000}jt`} />
+                    <YAxis stroke={chartColors.text} fontSize={11} tickFormatter={(value) => formatAxisValue(value)} />
                     <Tooltip
                       contentStyle={{
                         backgroundColor: chartColors.tooltip,
