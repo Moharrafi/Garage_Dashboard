@@ -52,7 +52,7 @@ const serviceColors: Record<string, string> = {
   Restorasi: "#8b5cf6",
 }
 
-const EMPLOYEE_SALARY_PER_PERSON = 2_000_000
+const EMPLOYEE_SALARY_PER_PERSON = 1_500_000
 const EMPLOYEE_COUNT = 4
 const ELECTRICITY_TOP_UP_COST = 100_000
 const ELECTRICITY_TOP_UPS = 3 // gunakan estimasi maksimal 3 kali pengisian per bulan
@@ -81,8 +81,9 @@ const formatProfitAxisTick = (value: number) => {
 }
 
 export default function KeuntunganPage() {
+  const currentMonthValue = String(new Date().getMonth())
   const [startMonth, setStartMonth] = useState("0")
-  const [endMonth, setEndMonth] = useState("11")
+  const [endMonth, setEndMonth] = useState(currentMonthValue)
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === "dark"
   const printRef = useRef<HTMLDivElement>(null)

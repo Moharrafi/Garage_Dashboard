@@ -346,7 +346,7 @@ export function DashboardHeader({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[340px] p-0 rounded-xl shadow-2xl border-border/50"
+                className="w-[340px] p-0 rounded-xl shadow-2xl border-border/50 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
                 align={isMobile ? "center" : "end"}
                 sideOffset={isMobile ? 14 : 8}
                 style={notificationDropdownStyle}
@@ -464,7 +464,7 @@ export function DashboardHeader({
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-64" align="end">
+              <DropdownMenuContent className="w-64 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 overflow-hidden" align="end">
                 <div className="flex items-center gap-3 p-3">
                   <Avatar className="h-12 w-12">
                     <AvatarImage src={profile.avatar_url || "/diverse-user-avatars.png"} alt="User" />
